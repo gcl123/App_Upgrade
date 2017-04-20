@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tt.javaserver.web.dao.ActionMapper">
+    <resultMap id="BaseResultMap" type="com.tt.javaserver.web.vo.Action">
+        <id column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="vaild" jdbcType="INTEGER" property="vaild"/>
+        <result column="var1" jdbcType="VARCHAR" property="var1"/>
+        <result column="var2" jdbcType="VARCHAR" property="var2"/>
+        <result column="var3" jdbcType="VARCHAR" property="var3"/>
+        <result column="var4" jdbcType="VARCHAR" property="var4"/>
+        <result column="var5" jdbcType="VARCHAR" property="var5"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <!--插入动作指令  -->
+    <insert id="insert" parameterType="com.tt.javaserver.web.vo.Action">
+        insert into tl_action_info (code, name, vaild,
+        var1, var2, var3, var4,var5,
+        update_time, create_time,
+        remark, description
+        )
+        values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{vaild,jdbcType=INTEGER},
+        #{var1,jdbcType=VARCHAR}, #{var2,jdbcType=VARCHAR}, #{var3,jdbcType=VARCHAR}, #{var4,jdbcType=VARCHAR},
+        #{var5,jdbcType=VARCHAR}, #{updateTime,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+
+    <!--删除动作指令-->
+    <delete id="delete" parameterType="java.lang.String">
+        delete from tl_action_info
+        where code = #{code,jdbcType=VARCHAR}
+    </delete>
+
+    <!--修改动作指令-->
+    <update id="update" parameterType="com.tt.javaserver.web.vo.Action">
+        update tl_action_info
+        set name = #{name,jdbcType=VARCHAR},
+        vaild = #{vaild,jdbcType=INTEGER},
+        var1 = #{var1,jdbcType=VARCHAR},
+        var2 = #{var2,jdbcType=VARCHAR},
+        var3 = #{var3,jdbcType=VARCHAR},
+        var4 = #{var4,jdbcType=VARCHAR},
+        var5 = #{var5,jdbcType=VARCHAR},
+        <if test="createTime != null">
+            create_time = #{createTime,jdbcType=INTEGER},
+        </if>
+        update_time = #{updateTime,jdbcType=INTEGER},
+        remark = #{remark,jdbcType=VARCHAR}
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
+
+    <!--模糊 查询对象-->
+    <select id="selectListUseDyc" parameterType="com.tt.javaserver.web.vo.Action" resultMap="BaseResultMap">
+        select *
+        from tl_action_info
+        <where>
+            <!--1=1-->
+            <if test="code != null">
+                <bind name="code" value="'%' + code + '%'"/>
+                and code like #{code}
+            </if>
+            <if test="name != null">
+                <bind name="name" value="'%' + name + '%'"/>
+                and name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <!--查询对象个数-->
+    <select id="selectCountUserDyc" parameterType="com.tt.javaserver.web.vo.Action" resultType="java.lang.Integer">
+        select count(1)
+        from tl_action_info
+        <where>
+            <if test="code != null">
+                <bind name="code" value="'%' + code + '%'"/>
+                and code like #{code}
+            </if>
+            <if test="name != null">
+                <bind name="name" value="'%' + name + '%'"/>
+                and name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <!--查询对象-->
+    <select id="select" parameterType="com.tt.javaserver.web.vo.Action" resultMap="BaseResultMap">
+        select *
+        from tl_action_info
+        WHERE code = #{code};
+    </select>
+
+
+    <!-- 通过主键批量删除-->
+    <delete id="deleteList">
+        delete from tl_action_info where tl_action_info.code in
+        <foreach close=")" collection="array" item="pks" open="(" separator=",">
+            #{pks}
+        </foreach>
+
+    </delete>
+
+
+</mapper>
