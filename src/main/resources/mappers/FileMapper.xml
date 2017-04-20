@@ -21,27 +21,12 @@
     </resultMap>
 
 
-    <!---->
-    <select id="select" parameterType="com.tt.javaserver.web.vo.File" resultMap="BaseResultMap">
-        select *
-        from tl_file_info
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-
-
-    <!--根据文件Id删除文件-->
-    <delete id="delete" parameterType="java.lang.Integer">
-        delete from tl_file_info
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
-
     <!--新增文件信息-->
     <insert id="insert" parameterType="com.tt.javaserver.web.vo.File">
-        insert into tl_file_info (id, app_id, name,
-        url, size, type, gzip,
-        version, var1, var2,
-        var3, var4, var5, update_time,
-        create_time, remark, md5
+        insert into tl_file_info (
+        id, app_id, name,url, size, type, gzip,
+        version, var1, var2,var3, var4, var5,
+        update_time,create_time, remark, md5
         )
         values (#{id,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
         #{url,jdbcType=VARCHAR}, #{size,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{gzip,jdbcType=INTEGER},
@@ -52,8 +37,14 @@
     </insert>
 
 
+    <!--根据文件Id删除文件-->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from tl_file_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
     <!--更新文件信息-->
-    <update id="updateByPrimaryKey" parameterType="com.tt.javaserver.web.vo.File">
+    <update id="update" parameterType="com.tt.javaserver.web.vo.File">
         update tl_file_info
         set app_id = #{appId,jdbcType=INTEGER},
         name = #{name,jdbcType=VARCHAR},
@@ -68,174 +59,223 @@
         var4 = #{var4,jdbcType=VARCHAR},
         var5 = #{var5,jdbcType=VARCHAR},
         update_time = #{updateTime,jdbcType=INTEGER},
-        create_time = #{createTime,jdbcType=INTEGER},
+        <if test="createTime != null">
+            create_time = #{createTime,jdbcType=INTEGER},
+        </if>
         remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-
-    <insert id="insertSelective" parameterType="com.tt.javaserver.web.vo.File">
-        insert into tl_file_info
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="appId != null">
-                app_id,
-            </if>
-            <if test="name != null">
-                name,
-            </if>
-            <if test="url != null">
-                url,
-            </if>
-            <if test="size != null">
-                size,
-            </if>
-            <if test="type != null">
-                type,
-            </if>
-            <if test="gzip != null">
-                gzip,
-            </if>
-            <if test="version != null">
-                version,
-            </if>
-            <if test="var1 != null">
-                var1,
-            </if>
-            <if test="var2 != null">
-                var2,
-            </if>
-            <if test="var3 != null">
-                var3,
-            </if>
-            <if test="var4 != null">
-                var4,
-            </if>
-            <if test="var5 != null">
-                var5,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="remark != null">
-                remark,
-            </if>
-            <if test="md5 != null">
-                md5,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="appId != null">
-                #{appId,jdbcType=INTEGER},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="url != null">
-                #{url,jdbcType=VARCHAR},
-            </if>
-            <if test="size != null">
-                #{size,jdbcType=INTEGER},
-            </if>
-            <if test="type != null">
-                #{type,jdbcType=INTEGER},
-            </if>
-            <if test="gzip != null">
-                #{gzip,jdbcType=INTEGER},
-            </if>
-            <if test="version != null">
-                #{version,jdbcType=VARCHAR},
-            </if>
-            <if test="var1 != null">
-                #{var1,jdbcType=VARCHAR},
-            </if>
-            <if test="var2 != null">
-                #{var2,jdbcType=VARCHAR},
-            </if>
-            <if test="var3 != null">
-                #{var3,jdbcType=VARCHAR},
-            </if>
-            <if test="var4 != null">
-                #{var4,jdbcType=VARCHAR},
-            </if>
-            <if test="var5 != null">
-                #{var5,jdbcType=VARCHAR},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=INTEGER},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=INTEGER},
-            </if>
-            <if test="remark != null">
-                #{remark,jdbcType=VARCHAR},
-            </if>
-            <if test="md5 != null">
-                #{md5,jdbcType=LONGVARCHAR},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.tt.javaserver.web.vo.File">
-        update tl_file_info
-        <set>
-            <if test="appId != null">
-                app_id = #{appId,jdbcType=INTEGER},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="url != null">
-                url = #{url,jdbcType=VARCHAR},
-            </if>
-            <if test="size != null">
-                size = #{size,jdbcType=INTEGER},
-            </if>
-            <if test="type != null">
-                type = #{type,jdbcType=INTEGER},
-            </if>
-            <if test="gzip != null">
-                gzip = #{gzip,jdbcType=INTEGER},
-            </if>
-            <if test="version != null">
-                version = #{version,jdbcType=VARCHAR},
-            </if>
-            <if test="var1 != null">
-                var1 = #{var1,jdbcType=VARCHAR},
-            </if>
-            <if test="var2 != null">
-                var2 = #{var2,jdbcType=VARCHAR},
-            </if>
-            <if test="var3 != null">
-                var3 = #{var3,jdbcType=VARCHAR},
-            </if>
-            <if test="var4 != null">
-                var4 = #{var4,jdbcType=VARCHAR},
-            </if>
-            <if test="var5 != null">
-                var5 = #{var5,jdbcType=VARCHAR},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=INTEGER},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=INTEGER},
-            </if>
-            <if test="remark != null">
-                remark = #{remark,jdbcType=VARCHAR},
-            </if>
-            <if test="md5 != null">
-                md5 = #{md5,jdbcType=LONGVARCHAR},
-            </if>
-        </set>
+    <!--查询-->
+    <select id="select" parameterType="com.tt.javaserver.web.vo.File" resultMap="BaseResultMap">
+        select *
+        from tl_file_info
         where id = #{id,jdbcType=INTEGER}
-    </update>
+    </select>
+
+    <!--模糊查询对象-->
+    <select id="selectList" parameterType="com.tt.javaserver.web.vo.File" resultMap="BaseResultMap">
+        select *
+        from tl_file_info
+        <where>
+            <if test="id != null">
+                <bind name="id" value="'%' + id + '%'"/>
+                and id like #{id}
+            </if>
+            <if test="appId != null">
+                <bind name="appId" value="'%' + appId + '%'"/>
+                and app_id like #{appId}
+            </if>
+        </where>
+    </select>
+
+    <!--模糊查询app版本个数-->
+    <select id="selectCount" parameterType="com.tt.javaserver.web.vo.File" resultType="java.lang.Integer">
+        select count(1)
+        from tl_file_info
+        <where>
+            <if test="id != null">
+                <bind name="id" value="'%' + id + '%'"/>
+                and id like #{id}
+            </if>
+            <if test="appId != null">
+                <bind name="appId" value="'%' + appId + '%'"/>
+                and app_id like #{appId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询对象个数-->
+    <select id="selectVersionTotal" parameterType="com.tt.javaserver.web.vo.File" resultType="java.lang.Integer">
+        select count(1)
+        from tl_file_info
+        WHERE id = #{id}
+        AND  app_id = #{appId}
+    </select>
+
+
+    <!--<insert id="insertSelective" parameterType="com.tt.javaserver.web.vo.File">-->
+    <!--insert into tl_file_info-->
+    <!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
+    <!--<if test="id != null">-->
+    <!--id,-->
+    <!--</if>-->
+    <!--<if test="appId != null">-->
+    <!--app_id,-->
+    <!--</if>-->
+    <!--<if test="name != null">-->
+    <!--name,-->
+    <!--</if>-->
+    <!--<if test="url != null">-->
+    <!--url,-->
+    <!--</if>-->
+    <!--<if test="size != null">-->
+    <!--size,-->
+    <!--</if>-->
+    <!--<if test="type != null">-->
+    <!--type,-->
+    <!--</if>-->
+    <!--<if test="gzip != null">-->
+    <!--gzip,-->
+    <!--</if>-->
+    <!--<if test="version != null">-->
+    <!--version,-->
+    <!--</if>-->
+    <!--<if test="var1 != null">-->
+    <!--var1,-->
+    <!--</if>-->
+    <!--<if test="var2 != null">-->
+    <!--var2,-->
+    <!--</if>-->
+    <!--<if test="var3 != null">-->
+    <!--var3,-->
+    <!--</if>-->
+    <!--<if test="var4 != null">-->
+    <!--var4,-->
+    <!--</if>-->
+    <!--<if test="var5 != null">-->
+    <!--var5,-->
+    <!--</if>-->
+    <!--<if test="updateTime != null">-->
+    <!--update_time,-->
+    <!--</if>-->
+    <!--<if test="createTime != null">-->
+    <!--create_time,-->
+    <!--</if>-->
+    <!--<if test="remark != null">-->
+    <!--remark,-->
+    <!--</if>-->
+    <!--<if test="md5 != null">-->
+    <!--md5,-->
+    <!--</if>-->
+    <!--</trim>-->
+    <!--<trim prefix="values (" suffix=")" suffixOverrides=",">-->
+    <!--<if test="id != null">-->
+    <!--#{id,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="appId != null">-->
+    <!--#{appId,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="name != null">-->
+    <!--#{name,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="url != null">-->
+    <!--#{url,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="size != null">-->
+    <!--#{size,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="type != null">-->
+    <!--#{type,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="gzip != null">-->
+    <!--#{gzip,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="version != null">-->
+    <!--#{version,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var1 != null">-->
+    <!--#{var1,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var2 != null">-->
+    <!--#{var2,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var3 != null">-->
+    <!--#{var3,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var4 != null">-->
+    <!--#{var4,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var5 != null">-->
+    <!--#{var5,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="updateTime != null">-->
+    <!--#{updateTime,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="createTime != null">-->
+    <!--#{createTime,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="remark != null">-->
+    <!--#{remark,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="md5 != null">-->
+    <!--#{md5,jdbcType=LONGVARCHAR},-->
+    <!--</if>-->
+    <!--</trim>-->
+    <!--</insert>-->
+    <!--<update id="updateByPrimaryKeySelective" parameterType="com.tt.javaserver.web.vo.File">-->
+    <!--update tl_file_info-->
+    <!--<set>-->
+    <!--<if test="appId != null">-->
+    <!--app_id = #{appId,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="name != null">-->
+    <!--name = #{name,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="url != null">-->
+    <!--url = #{url,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="size != null">-->
+    <!--size = #{size,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="type != null">-->
+    <!--type = #{type,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="gzip != null">-->
+    <!--gzip = #{gzip,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="version != null">-->
+    <!--version = #{version,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var1 != null">-->
+    <!--var1 = #{var1,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var2 != null">-->
+    <!--var2 = #{var2,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var3 != null">-->
+    <!--var3 = #{var3,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var4 != null">-->
+    <!--var4 = #{var4,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var5 != null">-->
+    <!--var5 = #{var5,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="updateTime != null">-->
+    <!--update_time = #{updateTime,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="createTime != null">-->
+    <!--create_time = #{createTime,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="remark != null">-->
+    <!--remark = #{remark,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="md5 != null">-->
+    <!--md5 = #{md5,jdbcType=LONGVARCHAR},-->
+    <!--</if>-->
+    <!--</set>-->
+    <!--where id = #{id,jdbcType=INTEGER}-->
+    <!--</update>-->
 
 </mapper>

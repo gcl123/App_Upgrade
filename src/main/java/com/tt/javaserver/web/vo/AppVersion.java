@@ -1,9 +1,18 @@
 package com.tt.javaserver.web.vo;
 
 public class AppVersion {
+
+    private Integer id;
+
+    private Integer appId;
+
     private String version;
 
     private Integer status;
+
+    private String updateDescription;
+
+    private String setupScript;
 
     private String var1;
 
@@ -21,9 +30,7 @@ public class AppVersion {
 
     private String remark;
 
-    private Integer id;
 
-    private Integer appId;
 
     public Integer getId() {
         return id;
@@ -55,6 +62,22 @@ public class AppVersion {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getUpdateDescription() {
+        return updateDescription;
+    }
+
+    public void setUpdateDescription(String updateDescription) {
+        this.updateDescription = updateDescription;
+    }
+
+    public String getSetupScript() {
+        return setupScript;
+    }
+
+    public void setSetupScript(String setupScript) {
+        this.setupScript = setupScript;
     }
 
     public String getVar1() {
@@ -119,5 +142,25 @@ public class AppVersion {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "AppVersion{" +
+                "id=" + id +
+                ", appId=" + appId +
+                ", version='" + version + '\'' +
+                ", status=" + status +
+                ", updateDescription='" + updateDescription + '\'' +
+                ", setupScript='" + setupScript + '\'' +
+                ", var1='" + var1 + '\'' +
+                ", var2='" + var2 + '\'' +
+                ", var3='" + var3 + '\'' +
+                ", var4='" + var4 + '\'' +
+                ", var5='" + var5 + '\'' +
+                ", updateTime=" + updateTime +
+                ", createTime=" + createTime +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

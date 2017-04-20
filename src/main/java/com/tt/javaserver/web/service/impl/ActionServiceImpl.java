@@ -24,12 +24,12 @@ public class ActionServiceImpl extends BaseServiceImpl<Action> implements Action
 
     @Override
     public List<Action> selectList(Action entity) {
-        return actionMapper.selectListUseDyc(entity);
+        return actionMapper.selectList(entity);
     }
 
     @Override
     public int selectCount(Action entity) {
-        return actionMapper.selectCountUserDyc(entity);
+        return actionMapper.selectCount(entity);
     }
 
     @Override

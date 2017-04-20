@@ -3,6 +3,7 @@ package com.tt.javaserver.web.service.impl;
 import com.tt.javaserver.web.dao.*;
 import com.tt.javaserver.web.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * Created by GCL on 17/4/15.
  */
 
+@Service
 public class BaseServiceImpl<T> implements BaseService<T> {
 
     protected BaseMapper<T> baseMapper;
@@ -24,7 +26,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     protected AppMapper appMapper;
 
     @Autowired
-    protected AppVersionMapper appVersion;
+    protected AppVersionMapper appVersionMapper;
 
     @Autowired
     protected FileMapper fileMapper;
@@ -35,6 +37,8 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public int insert(T entity) throws Exception {
+        System.out.println("base=======");
+
         return baseMapper.insert(entity);
     }
 
@@ -62,17 +66,16 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public List<T> selectList(T entity) {
-        return baseMapper.selectListUseDyc(entity);
+        return baseMapper.selectList(entity);
     }
 
     @Override
     public int selectCount(T entity) {
-        System.out.println("base............." + entity);
-        return baseMapper.selectCountUserDyc(entity);
+        return baseMapper.selectCount(entity);
     }
 
     @Override
-    public int getID(T entity) throws Exception {
+    public int getID(T entity) {
         return baseMapper.selectID(entity);
     }
 }

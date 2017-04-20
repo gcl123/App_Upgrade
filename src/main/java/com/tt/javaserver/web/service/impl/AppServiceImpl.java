@@ -1,16 +1,21 @@
 package com.tt.javaserver.web.service.impl;
 
+import com.tt.javaserver.web.dao.AppMapper;
 import com.tt.javaserver.web.service.AppService;
 import com.tt.javaserver.web.vo.App;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * Created by GCL on 17/4/15.
  */
 @Service
-public class AppServiceImpl extends BaseServiceImpl<App> implements AppService {
+public class AppServiceImpl implements AppService {
+
+    @Resource
+    private AppMapper appMapper;
 
     @Override
     public int insert(App entity) {
@@ -41,13 +46,13 @@ public class AppServiceImpl extends BaseServiceImpl<App> implements AppService {
 
     @Override
     public List<App> selectList(App entity) {
-        return appMapper.selectListUseDyc(entity);
+        return appMapper.selectList(entity);
     }
 
     @Override
     public int selectCount(App entity) {
         System.out.println("base............." + entity);
-        return appMapper.selectCountUserDyc(entity);
+        return appMapper.selectCount(entity);
     }
 
     @Override

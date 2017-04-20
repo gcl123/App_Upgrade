@@ -170,4 +170,27 @@ public class File {
     public void setMd5(String md5) {
         this.md5 = md5;
     }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "id=" + id +
+                ", appId=" + appId +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", size=" + size +
+                ", type=" + type +
+                ", gzip=" + gzip +
+                ", version='" + version + '\'' +
+                ", var1='" + var1 + '\'' +
+                ", var2='" + var2 + '\'' +
+                ", var3='" + var3 + '\'' +
+                ", var4='" + var4 + '\'' +
+                ", var5='" + var5 + '\'' +
+                ", updateTime=" + updateTime +
+                ", createTime=" + createTime +
+                ", remark='" + remark + '\'' +
+                ", md5='" + md5 + '\'' +
+                '}';
+    }
 }

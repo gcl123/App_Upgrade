@@ -45,17 +45,17 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
 
     @Override
     public List<Company> selectList(Company entity) {
-        return companyMapper.selectListUseDyc(entity);
+        return companyMapper.selectList(entity);
     }
 
     @Override
     public int selectCount(Company entity) {
         System.out.println("base............." + entity);
-        return companyMapper.selectCountUserDyc(entity);
+        return companyMapper.selectCount(entity);
     }
 
     @Override
-    public int getID(Company entity) throws Exception {
+    public int getID(Company entity) {
         return companyMapper.selectID(entity);
     }
 

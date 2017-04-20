@@ -20,8 +20,17 @@
                     $("#bt1").click(
                             function () {
                                 $.post(
-                                        "appFiles/add.action",
-                                        {appVersionId: "2", fileId: "2"},
+                                        "file/add.action",
+                                        {
+                                            id: "2",
+                                            appId: "2",
+                                            name: "soft",
+                                            url: "http:local",
+                                            size: "11",
+                                            type: "0",
+                                            gzip: "0",
+                                            md5: "123"
+                                        },
                                         function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
@@ -41,8 +50,18 @@
                     $("#bt2").click(
                             function () {
                                 $.post(
-                                        "appFiles/delete.action",
-                                        {appVersionId: "2", fileId: "2"}, function (jsonResult) {
+                                        "file/delete.action",
+                                        {
+                                            id: "1",
+                                            appId: "1",
+                                            name: "soft",
+                                            url: "http:local",
+                                            size: "11",
+                                            type: "0",
+                                            gzip: "0",
+                                            md5: "123"
+                                        },
+                                        function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);
@@ -61,8 +80,18 @@
                     $("#bt3").click(
                             function () {
                                 $.post(
-                                        "appFiles/update.action",
-                                        {appVersionId: "2", fileId: "2"}, function (jsonResult) {
+                                        "file/update.action",
+                                        {
+                                            id: "1",
+                                            appId: "1",
+                                            name: "soft",
+                                            url: "http:local",
+                                            size: "11",
+                                            type: "0",
+                                            gzip: "0",
+                                            md5: "123"
+                                        },
+                                        function (jsonResult) {
                                             alert(jsonResult)
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
@@ -82,8 +111,18 @@
                     $("#bt4").click(
                             function () {
                                 $.post(
-                                        "appFiles/query.action",
-                                        {appVersionId: "2", fileId: "2"}, function (jsonResult) {
+                                        "file/query.action",
+                                        {
+                                            id: "1",
+                                            appId: "1",
+                                            name: "soft",
+                                            url: "http:local",
+                                            size: "11",
+                                            type: "0",
+                                            gzip: "0",
+                                            md5: "123"
+                                        },
+                                        function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);

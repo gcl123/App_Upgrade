@@ -18,12 +18,13 @@
 
     <!--新增app版本信息-->
     <insert id="insert" parameterType="com.tt.javaserver.web.vo.AppVersion">
-        insert into tl_app_version (id, app_id, version,
-        status, var1, var2,
-        var3, var4, var5, update_time,
-        create_time, remark, update_description,
-        setup_script)
-        values (#{id,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{version,jdbcType=VARCHAR},
+        insert into tl_app_version
+        (id, app_id, version,status,
+        var1, var2,var3, var4, var5,
+        update_time,create_time, remark,
+        update_description,setup_script)
+        values
+        (#{id,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{version,jdbcType=VARCHAR},
         #{status,jdbcType=INTEGER}, #{var1,jdbcType=VARCHAR}, #{var2,jdbcType=VARCHAR},
         #{var3,jdbcType=VARCHAR}, #{var4,jdbcType=VARCHAR}, #{var5,jdbcType=VARCHAR}, #{updateTime,jdbcType=INTEGER},
         #{createTime,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{updateDescription,jdbcType=LONGVARCHAR},
@@ -33,12 +34,12 @@
     <!--删除app版本信息-->
     <delete id="delete" parameterType="com.tt.javaserver.web.vo.AppVersion">
         delete from tl_app_version
-        where id = #{id,jdbcType=INTEGER}
+        where version = #{version,jdbcType=INTEGER}
         and app_id = #{appId,jdbcType=INTEGER}
     </delete>
 
     <!--更新app版本信息-->
-    <update id="updateByPrimaryKey" parameterType="com.tt.javaserver.web.vo.AppVersion">
+    <update id="update" parameterType="com.tt.javaserver.web.vo.AppVersion">
         update tl_app_version
         set version = #{version,jdbcType=VARCHAR},
         status = #{status,jdbcType=INTEGER},
@@ -48,21 +49,23 @@
         var4 = #{var4,jdbcType=VARCHAR},
         var5 = #{var5,jdbcType=VARCHAR},
         update_time = #{updateTime,jdbcType=INTEGER},
-        create_time = #{createTime,jdbcType=INTEGER},
+        <if test="createTime != null">
+            create_time = #{createTime,jdbcType=INTEGER},
+        </if>
         remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER}
+        where version = #{version,jdbcType=INTEGER}
         and app_id = #{appId,jdbcType=INTEGER}
     </update>
 
     <!--查询app版本信息-->
-    <select id="selectVersion" parameterType="com.tt.javaserver.web.vo.AppVersion" resultMap="BaseResultMap">
+    <select id="select" parameterType="com.tt.javaserver.web.vo.AppVersion" resultMap="BaseResultMap">
         select *
         from tl_app_version
         where app_id = #{appId,jdbcType=INTEGER}
     </select>
 
-    <!--模糊 查询对象-->
-    <select id="selectListUseDyc" parameterType="com.tt.javaserver.web.vo.AppVersion" resultMap="BaseResultMap">
+    <!--模糊查询对象-->
+    <select id="selectList" parameterType="com.tt.javaserver.web.vo.AppVersion" resultMap="BaseResultMap">
         select *
         from tl_app_version
         <where>
@@ -70,22 +73,45 @@
                 <bind name="appId" value="'%' + appId + '%'"/>
                 and app_id like #{appId}
             </if>
-            <if test="appName != null">
-                <bind name="appName" value="'%' + appName + '%'"/>
-                and app_name like #{appName}
+            <if test="version != null">
+                <bind name="version" value="'%' + version + '%'"/>
+                and version like #{version}
             </if>
         </where>
     </select>
 
     <!--查询app版本个数-->
-    <select id="selectCountUserDyc" parameterType="com.tt.javaserver.web.vo.AppVersion" resultType="java.lang.Integer">
+    <select id="selectCount" parameterType="com.tt.javaserver.web.vo.AppVersion" resultType="java.lang.Integer">
         select count(1)
-        from tl_app_info
-        WHERE app_id = #{appId,jdbcType=INTEGER}
+        from tl_app_version
+        <where>
+            <if test="appId != null">
+                <bind name="appId" value="'%' + appId + '%'"/>
+                and app_id like #{appId}
+            </if>
+            <if test="version != null">
+                <bind name="version" value="'%' + version + '%'"/>
+                and version like #{version}
+            </if>
+        </where>
     </select>
 
+    <!--查询对象id-->
+    <select id="selectID" parameterType="com.tt.javaserver.web.vo.AppVersion" resultType="java.lang.Integer">
+        select id
+        from tl_app_version
+        WHERE app_id = #{appId}
+        AND  version = #{version}
+    </select>
+    <!--查询对象个数-->
+    <select id="selectVersionTotal" parameterType="com.tt.javaserver.web.vo.AppVersion" resultType="java.lang.Integer">
+        select count(1)
+        from tl_app_version
+        WHERE app_id = #{appId}
+        AND  version = #{version}
+    </select>
 
-    <!--<insert id="insertSelective" parameterType="com.tt.javaserver.web.vo.AppVersion">-->
+    <!--<insert id="insert1" parameterType="com.tt.javaserver.web.vo.AppVersion">-->
     <!--insert into tl_app_version-->
     <!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
     <!--<if test="id != null">-->
@@ -217,7 +243,7 @@
     <!--</if>-->
     <!--</set>-->
     <!--where id = #{id,jdbcType=INTEGER}-->
-    <!--and app_id = #{appId,jdbcType=INTEGER}-->
+    <!--&#45;&#45;     and app_id = #{appId,jdbcType=INTEGER}-->
     <!--</update>-->
-    <!---->
+
 </mapper>

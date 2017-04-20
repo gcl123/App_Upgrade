@@ -8,4 +8,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface AppVersionService extends BaseService<AppVersion> {
+    int delete(AppVersion appVersion);
 }
+

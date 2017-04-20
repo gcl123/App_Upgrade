@@ -1,7 +1,6 @@
 package com.tt.javaserver.web.interceptor;
 
 import com.tt.javaserver.web.service.TlRequestContext;
-import com.tt.javaserver.web.util.URIs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,21 +48,21 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
                                 HttpServletResponse response, Object handler,
                                 Exception ex) throws Exception {
         try {
-            long current = System.currentTimeMillis();
-            final long costMs = current - TlRequestContext
-                    .getStartTime();
-            final String requestUrl = request.getRequestURL().toString();
-            String m = request.getRequestURI().replaceAll("/", "-");
-            requestLogger.info
-                    ("Request:\t{}\t{}\t{}\t{}\t{}\t{}\tCost" +
-                                    ":{}ms",
-                            new String[]{String.valueOf(current),
-                                    request.getRequestURI()
-                                    , String.valueOf(0)
-                                    , request.getSession().getId()
-                                    , URIs.getIp(request)
-                                    , request.getHeader("User-Agent")
-                                    , String.valueOf(costMs)});
+//            long current = System.currentTimeMillis();
+//            final long costMs = current - TlRequestContext
+//                    .getStartTime();
+//            final String requestUrl = request.getRequestURL().toString();
+//            String m = request.getRequestURI().replaceAll("/", "-");
+//            requestLogger.info
+//                    ("Request:\t{}\t{}\t{}\t{}\t{}\t{}\tCost" +
+//                                    ":{}ms",
+//                            new String[]{String.valueOf(current),
+//                                    request.getRequestURI()
+//                                    , String.valueOf(0)
+//                                    , request.getSession().getId()
+//                                    , URIs.getIp(request)
+//                                    , request.getHeader("User-Agent")
+//                                    , String.valueOf(costMs)});
 
 
         } catch (Exception e) {

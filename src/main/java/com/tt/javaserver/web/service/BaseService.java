@@ -29,5 +29,5 @@ public interface BaseService<T> {
     //    查询对象个数
     int selectCount(T entity);
 
-    int getID(T entity) throws Exception;
+    int getID(T entity);
 }

@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 public interface AppVersionMapper extends BaseMapper<AppVersion> {
 
+    int delete(AppVersion appVersion);
+
+
 }

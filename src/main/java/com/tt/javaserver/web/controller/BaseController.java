@@ -1,7 +1,11 @@
 package com.tt.javaserver.web.controller;
 
 import com.google.gson.Gson;
+import com.tt.javaserver.web.model.ResultCode;
+import com.tt.javaserver.web.model.SimpleResult;
 import org.springframework.stereotype.Controller;
+
+import java.util.Map;
 
 /**
  * Created by GCL on 17/4/18.
@@ -34,6 +38,22 @@ public class BaseController {
         String jsonResult = gson.toJson(object);
         System.out.println("json::::" + jsonResult);
         return jsonResult;
+    }
+
+    /**
+     * 设置返回结果
+     *
+     * @param result
+     * @param i      操作返回的结果 成功返回1
+     */
+    public void setResult(SimpleResult<Map> result, int i) {
+        if (i > 0) {
+            result.setCode(ResultCode.OK.getCode());
+            result.setMsg(ResultCode.OK.getMsg());
+        } else {
+            result.setCode(ResultCode.ERROR.getCode());
+            result.setMsg(ResultCode.ERROR.getMsg());
+        }
     }
 
 

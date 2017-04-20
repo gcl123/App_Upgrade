@@ -16,8 +16,9 @@
 
     <!--增加app文件对应信息-->
     <insert id="insert" parameterType="com.tt.javaserver.web.vo.AppFiles">
-        insert into tl_app_files (app_version_id, file_id, var1,
-        var2, var3, var4, var5,
+        insert into tl_app_files (
+        app_version_id, file_id,
+        var1,var2, var3, var4, var5,
         update_time, create_time, remark
         )
         values (#{appVersionId,jdbcType=INTEGER}, #{fileId,jdbcType=INTEGER}, #{var1,jdbcType=VARCHAR},
@@ -33,13 +34,50 @@
         and file_id = #{fileId,jdbcType=INTEGER}
     </delete>
 
+    <!--更新软件文件表-->
+    <update id="update" parameterType="com.tt.javaserver.web.vo.AppFiles">
+        update tl_app_files
+        set
+        var1 = #{var1,jdbcType=VARCHAR},
+        var2 = #{var2,jdbcType=VARCHAR},
+        var3 = #{var3,jdbcType=VARCHAR},
+        var4 = #{var4,jdbcType=VARCHAR},
+        var5 = #{var5,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=INTEGER},
+        <if test="createTime != null">
+            create_time = #{createTime,jdbcType=INTEGER},
+        </if>
+        remark = #{remark,jdbcType=VARCHAR}
+        where app_version_id = #{appVersionId,jdbcType=INTEGER}
+        and file_id = #{fileId,jdbcType=INTEGER}
+    </update>
 
-    <!--<select id="selectByPrimaryKey" parameterType="com.tt.javaserver.web.vo.AppFilesKey" resultMap="BaseResultMap">-->
-    <!--select *-->
-    <!--from tl_app_files-->
-    <!--where app_version_id = #{appVersionId,jdbcType=INTEGER}-->
-    <!--and file_id = #{fileId,jdbcType=INTEGER}-->
-    <!--</select>-->
+    <!--根据版本查找文件信息-->
+    <select id="selectFiles" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select *
+        from tl_app_files
+        where app_version_id = #{appVersionId,jdbcType=INTEGER}
+    </select>
+    <!--根据文件查找对应软件版本-->
+    <select id="selectVersions" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select *
+        from tl_app_files
+        where file_id = #{fileId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据id 统计文件对应版本数量-->
+    <select id="selectCountVersions" parameterType="java.lang.Integer" resultMap="java.lang.Integer">
+        select COUNT(1)
+        from tl_app_files
+        where file_id = #{fileId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据id 统计软件版本对应文件数量数量-->
+    <select id="selectCountFiles" parameterType="java.lang.Integer" resultMap="java.lang.Integer">
+        select COUNT(1)
+        from tl_app_files
+        where app_version_id = #{appVersionId,jdbcType=INTEGER}
+    </select>
 
 
     <!--&lt;!&ndash;<insert id="insertSelective" parameterType="com.tt.javaserver.web.vo.AppFiles">&ndash;&gt;-->
@@ -131,15 +169,15 @@
     <!--update_time = #{updateTime,jdbcType=INTEGER},-->
     <!--</if>-->
     <!--<if test="createTime != null">-->
-    <!--&lt;!&ndash;create_time = #{createTime,jdbcType=INTEGER},&ndash;&gt;-->
-    <!--&lt;!&ndash;</if>&ndash;&gt;-->
-    <!--&lt;!&ndash;<if test="remark != null">&ndash;&gt;-->
-    <!--&lt;!&ndash;remark = #{remark,jdbcType=VARCHAR},&ndash;&gt;-->
-    <!--&lt;!&ndash;</if>&ndash;&gt;-->
-    <!--&lt;!&ndash;</set>&ndash;&gt;-->
-    <!--&lt;!&ndash;where app_version_id = #{appVersionId,jdbcType=INTEGER}&ndash;&gt;-->
-    <!--&lt;!&ndash;and file_id = #{fileId,jdbcType=INTEGER}&ndash;&gt;-->
-    <!--&lt;!&ndash;</update>&ndash;&gt;-->
+    <!--create_time = #{createTime,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="remark != null">-->
+    <!--remark = #{remark,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--</set>-->
+    <!--where app_version_id = #{appVersionId,jdbcType=INTEGER}-->
+    <!--and file_id = #{fileId,jdbcType=INTEGER}-->
+    <!--</update>-->
     <!--<update id="updateByPrimaryKey" parameterType="com.tt.javaserver.web.vo.AppFiles">-->
     <!--update tl_app_files-->
     <!--set var1 = #{var1,jdbcType=VARCHAR},-->

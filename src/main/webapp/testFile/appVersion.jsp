@@ -14,14 +14,13 @@
 
 
     <title>My JSP 'json.jsp' starting page</title>
-
     <script type="text/javascript">
         $(function () {
                     $("#bt1").click(
                             function () {
                                 $.post(
-                                        "appFiles/add.action",
-                                        {appVersionId: "2", fileId: "2"},
+                                        "version/query.action",
+                                        {appId: "1", version: "1", setup_script: "---", status: "1"},
                                         function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
@@ -41,8 +40,9 @@
                     $("#bt2").click(
                             function () {
                                 $.post(
-                                        "appFiles/delete.action",
-                                        {appVersionId: "2", fileId: "2"}, function (jsonResult) {
+                                        "version/add.action",
+                                        {appId: "1", version: "1.0", setupScript: "ok", status: "1"},
+                                        function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);
@@ -61,8 +61,9 @@
                     $("#bt3").click(
                             function () {
                                 $.post(
-                                        "appFiles/update.action",
-                                        {appVersionId: "2", fileId: "2"}, function (jsonResult) {
+                                        "version/delete.action",
+                                        {appId: "1", version: "1.0", setup_script: "---", status: "1"},
+                                        function (jsonResult) {
                                             alert(jsonResult)
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
@@ -82,8 +83,9 @@
                     $("#bt4").click(
                             function () {
                                 $.post(
-                                        "appFiles/query.action",
-                                        {appVersionId: "2", fileId: "2"}, function (jsonResult) {
+                                        "version/update.action",
+                                        {appId: "1", version: "1.1", setupScript: "---", status: "1"},
+                                        function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);
@@ -99,9 +101,9 @@
     </script>
 </head>
 <body>
-<button id="bt1">add</button>
-<button id="bt2">delete</button>
-<button id="bt3">update</button>
-<button id="bt4">query</button>
+<button id="bt1">query</button>
+<button id="bt2">add</button>
+<button id="bt3">delete</button>
+<button id="bt4">update</button>
 </body>
 </html>

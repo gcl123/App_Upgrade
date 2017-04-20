@@ -1,6 +1,11 @@
 package com.tt.javaserver.web.vo;
 
 public class AppFiles {
+
+    private Integer appVersionId;
+
+    private Integer fileId;
+
     private String var1;
 
     private String var2;
@@ -17,9 +22,7 @@ public class AppFiles {
 
     private String remark;
 
-    private Integer appVersionId;
 
-    private Integer fileId;
 
     public Integer getAppVersionId() {
         return appVersionId;
@@ -99,5 +102,21 @@ public class AppFiles {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "AppFiles{" +
+                "appVersionId=" + appVersionId +
+                ", fileId=" + fileId +
+                ", var1='" + var1 + '\'' +
+                ", var2='" + var2 + '\'' +
+                ", var3='" + var3 + '\'' +
+                ", var4='" + var4 + '\'' +
+                ", var5='" + var5 + '\'' +
+                ", updateTime=" + updateTime +
+                ", createTime=" + createTime +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }
