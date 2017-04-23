@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ActionMapper extends BaseMapper<Action> {
 
-    void delete(String code);
 }

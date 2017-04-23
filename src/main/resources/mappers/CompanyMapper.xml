@@ -37,15 +37,15 @@
     </insert>
 
     <!--删除动作指令-->
-    <delete id="delete" parameterType="java.lang.Integer">
+    <delete id="deleteByStr" parameterType="java.lang.String">
         delete from tl_company_info
-        where id = #{id}
+        where code = #{code}
     </delete>
 
     <!--修改动作指令-->
     <update id="update" parameterType="com.tt.javaserver.web.vo.Company">
         update tl_company_info
-        set code = #{code,jdbcType=VARCHAR},
+        set
         name = #{name,jdbcType=VARCHAR},
         short_name = #{shortName,jdbcType=VARCHAR},
         mobile = #{mobile,jdbcType=VARCHAR},
@@ -61,12 +61,12 @@
         </if>
         update_time = #{updateTime,jdbcType=INTEGER},
         remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER}
+        where code = #{code,jdbcType=VARCHAR}
     </update>
 
 
     <!--模糊 查询对象-->
-    <select id="selectListUseDyc" parameterType="com.tt.javaserver.web.vo.Company" resultMap="BaseResultMap">
+    <select id="selectList" parameterType="com.tt.javaserver.web.vo.Company" resultMap="BaseResultMap">
         select *
         from tl_company_info
         <where>
@@ -82,7 +82,7 @@
     </select>
 
     <!--查询对象个数-->
-    <select id="selectCountUserDyc" parameterType="com.tt.javaserver.web.vo.Company" resultType="java.lang.Integer">
+    <select id="selectCount" parameterType="com.tt.javaserver.web.vo.Company" resultType="java.lang.Integer">
         select count(1)
         from tl_company_info
         <where>
@@ -103,11 +103,13 @@
         from tl_company_info
         WHERE code = #{code};
     </select>
-    <!--查询对象个数-->
-    <select id="selectByCode" parameterType="com.tt.javaserver.web.vo.Company" resultType="java.lang.Integer">
-        select COUNT(1)
+
+    <!--查询是否有对象-->
+    <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.Company" resultType="java.lang.Integer">
+        select count(1)
         from tl_company_info
         WHERE code = #{code};
     </select>
+
 
 </mapper>

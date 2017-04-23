@@ -1,6 +1,5 @@
 package com.tt.javaserver.web.controller;
 
-import com.tt.javaserver.web.model.ResultCode;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.ActionService;
 import com.tt.javaserver.web.vo.Action;
@@ -46,18 +45,9 @@ public class ActionController extends BaseController {
         SimpleResult<Map> result = new SimpleResult<>();
         Map<String, Object> data = new HashMap<>();
 
-        if (i != 0) {
-            result.setCode(ResultCode.OK.getCode());
-            result.setMsg(ResultCode.OK.getMsg());
-            data.put("code", action.getCode());
-//            data.put("actions",action);
-            result.setData(data);
-        } else {
-            result.setCode(ResultCode.ERROR.getCode());
-            result.setMsg(ResultCode.ERROR.getMsg());
-            data.put("code", null);
-            result.setData(data);
-        }
+        setResult(result,i);
+        data.put("code", action.getCode());
+        result.setData(data);
 
         System.out.println(result);
 
@@ -75,7 +65,7 @@ public class ActionController extends BaseController {
     @RequestMapping("/query")
     @ResponseBody
     public SimpleResult<Map> query(Action action) {
-        System.out.println("=============");
+        System.out.println("=============query");
         System.out.println(action.toString());
 
         int total = actionService.selectCount(action);
@@ -84,19 +74,10 @@ public class ActionController extends BaseController {
         SimpleResult<Map> result = new SimpleResult<>();
         Map<String, Object> data = new HashMap<>();
 
-        if (total > 0 && actionList != null) {
-            result.setCode(ResultCode.OK.getCode());
-            result.setMsg(ResultCode.OK.getMsg());
-            data.put("total", total);
-            data.put("actions", actionList);
-            result.setData(data);
-        } else {
-            result.setCode(ResultCode.ERROR.getCode());
-            result.setMsg(ResultCode.ERROR.getMsg());
-            data.put("code", null);
-            result.setData(data);
-        }
-//        String jsonResult = java2Json(result);
+        setResult(result,total);
+        data.put("total", total);
+        data.put("actions", actionList);
+        result.setData(data);
         return result;
     }
 
@@ -111,18 +92,12 @@ public class ActionController extends BaseController {
     @ResponseBody
     public SimpleResult<Map> update(Action action) {
         System.out.println("=============");
-        System.out.println(action.toString());
+        System.out.println(action);
         addUpdateTime(action);
         int i = actionService.update(action);
         SimpleResult<Map> result = new SimpleResult<>();
 
-        if (i != 0) {
-            result.setCode(ResultCode.OK.getCode());
-            result.setMsg(ResultCode.OK.getMsg());
-        } else {
-            result.setCode(ResultCode.ERROR.getCode());
-            result.setMsg("更新失败");
-        }
+        setResult(result,i);
         System.out.println(result);
 
         return result;
@@ -143,17 +118,11 @@ public class ActionController extends BaseController {
         System.out.println(action.toString());
 
         String code = action.getCode();
-        actionService.delete(code);
+        actionService.delete(action);
         int i = actionService.update(action);
         SimpleResult<Map> result = new SimpleResult<>();
 
-        if (i != 0) {
-            result.setCode(ResultCode.OK.getCode());
-            result.setMsg(ResultCode.OK.getMsg());
-        } else {
-            result.setCode(ResultCode.ERROR.getCode());
-            result.setMsg("删除失败");
-        }
+        setResult(result,i);
 
         return result;
     }

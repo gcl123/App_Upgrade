@@ -4,8 +4,6 @@ import com.tt.javaserver.web.service.ActionService;
 import com.tt.javaserver.web.vo.Action;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Created by GCL on 17/4/15.
  */
@@ -13,27 +11,10 @@ import java.util.List;
 public class ActionServiceImpl extends BaseServiceImpl<Action> implements ActionService {
 
 
-    @Override
-    public void delete(String code) {
-        actionMapper.delete(code);
-    }
 
-    public int insert(Action action) {
-        return actionMapper.insert(action);
-    }
 
     @Override
-    public List<Action> selectList(Action entity) {
-        return actionMapper.selectList(entity);
-    }
-
-    @Override
-    public int selectCount(Action entity) {
-        return actionMapper.selectCount(entity);
-    }
-
-    @Override
-    public int update(Action entity) {
-        return actionMapper.update(entity);
+    public int delete(Action action) {
+        return actionMapper.deleteByStr(action.getCode());
     }
 }

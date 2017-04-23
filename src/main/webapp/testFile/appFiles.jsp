@@ -14,13 +14,14 @@
 
 
     <title>My JSP 'json.jsp' starting page</title>
+
     <script type="text/javascript">
         $(function () {
                     $("#bt1").click(
                             function () {
                                 $.post(
-                                        "company/query.action",
-                                        {code: "8", name: "", vaild: "1"},
+                                        "appFiles/add.action",
+                                        {appVersionId: "2", fileId: "2"},
                                         function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
@@ -40,9 +41,8 @@
                     $("#bt2").click(
                             function () {
                                 $.post(
-                                        "company/add.action",
-                                        {code: "81", name: "tooooo", vaild: "1"},
-                                        function (jsonResult) {
+                                        "appFiles/delete.action",
+                                        {appVersionId: "2", fileId: "2"}, function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);
@@ -61,9 +61,9 @@
                     $("#bt3").click(
                             function () {
                                 $.post(
-                                        "company/delete.action",
-                                        {code: "31", name: "tooooo", vaild: "1"},
-                                        function (jsonResult) {
+                                        "appFiles/update.action",
+                                        {appVersionId: "1", fileId: "1"}, function (jsonResult) {
+                                            alert(jsonResult)
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);
@@ -82,9 +82,28 @@
                     $("#bt4").click(
                             function () {
                                 $.post(
-                                        "company/update.action",
-                                        {code: "81", name: "tooooo", vaild: "1"},
-                                        function (jsonResult) {
+                                        "appFiles/queryVersion.action",
+                                        {appVersionId: "2", fileId: "2"}, function (jsonResult) {
+                                            for (i in jsonResult) {
+                                                str = JSON.stringify(jsonResult[i]);
+                                                alert(str);
+                                            }
+                                        },
+                                        "json"
+                                );
+                            }
+                    );
+                }
+        );
+
+    </script>
+    <script type="text/javascript">
+        $(function () {
+                    $("#bt5").click(
+                            function () {
+                                $.post(
+                                        "appFiles/queryFiles.action",
+                                        {appVersionId: "2", fileId: "1"}, function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);
@@ -100,9 +119,11 @@
     </script>
 </head>
 <body>
-<button id="bt1">query</button>
-<button id="bt2">add</button>
-<button id="bt3">delete</button>
-<button id="bt4">update</button>
+<button id="bt1">add</button>
+<button id="bt2">delete</button>
+<button id="bt3">update</button>
+<button id="bt4">queryVersion</button>
+<button id="bt5">queryFiles</button>
+
 </body>
 </html>

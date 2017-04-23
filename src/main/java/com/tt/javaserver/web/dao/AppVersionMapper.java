@@ -9,5 +9,4 @@ public interface AppVersionMapper extends BaseMapper<AppVersion> {
 
     int delete(AppVersion appVersion);
 
-
 }

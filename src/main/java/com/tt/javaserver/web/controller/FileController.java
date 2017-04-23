@@ -28,7 +28,7 @@ public class FileController extends BaseController {
     @RequestMapping("/add")
     @ResponseBody
     public SimpleResult<Map> insert(File file) {
-        System.out.println("====add====");
+        System.out.println("add=====");
         System.out.println(file.toString());
 
         addUpdateAndCreateTime(file);
@@ -61,7 +61,7 @@ public class FileController extends BaseController {
     @RequestMapping("/query")
     @ResponseBody
     public SimpleResult<Map> query(File file) {
-        System.out.println("=============");
+        System.out.println("query=========");
         System.out.println(file.toString());
 
         int total = fileService.selectCount(file);
@@ -87,7 +87,7 @@ public class FileController extends BaseController {
     @RequestMapping("/update")
     @ResponseBody
     public SimpleResult<Map> update(File file) {
-        System.out.println("=============");
+        System.out.println("update===========");
         System.out.println(file.toString());
 
         addUpdateTime(file);
@@ -115,7 +115,7 @@ public class FileController extends BaseController {
 
         int i = 0;
         try {
-            i = fileService.delete(file.getId());
+            i = fileService.delete(file);
         } catch (Exception e) {
             e.printStackTrace();
         }

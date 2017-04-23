@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class BaseServiceImpl<T> implements BaseService<T> {
 
+    @Autowired
     protected BaseMapper<T> baseMapper;
 
     @Autowired
@@ -37,20 +38,19 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public int insert(T entity) throws Exception {
-        System.out.println("base=======");
-
+        System.out.println("base=======insert" + entity);
         return baseMapper.insert(entity);
     }
 
     @Override
     public int update(T entity) {
+        System.out.println("update__baseServiceImpl======" + entity);
         return baseMapper.update(entity);
     }
 
     @Override
-    public int delete(int id) throws Exception {
-        System.out.println("service+=======");
-        return baseMapper.delete(id);
+    public int delete(T entity) {
+        return 0;
     }
 
 
@@ -66,11 +66,14 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public List<T> selectList(T entity) {
+        System.out.println("baseServiceimple===selectList" + entity);
+
         return baseMapper.selectList(entity);
     }
 
     @Override
     public int selectCount(T entity) {
+        System.out.println("baseServiceimple===selectcount" + entity);
         return baseMapper.selectCount(entity);
     }
 

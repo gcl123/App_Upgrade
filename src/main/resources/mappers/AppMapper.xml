@@ -35,15 +35,15 @@
     </insert>
 
     <!--删除动作指令-->
-    <delete id="delete" parameterType="java.lang.Integer">
+    <delete id="deleteByStr" parameterType="java.lang.String">
         delete from tl_app_info
-        where id = #{id}
+        where app_code = #{appCode};
     </delete>
 
     <!--修改动作指令-->
     <update id="update" parameterType="com.tt.javaserver.web.vo.App">
         update tl_app_info
-        set app_code = #{appCode,jdbcType=VARCHAR},
+        set
         app_name = #{appName,jdbcType=VARCHAR},
         latest_version = #{latestVersion,jdbcType=VARCHAR},
         limit_version = #{limitVersion,jdbcType=VARCHAR},
@@ -56,11 +56,11 @@
         update_time = #{updateTime,jdbcType=INTEGER},
         create_time = #{createTime,jdbcType=INTEGER},
         remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER}
+        where app_code = #{appCode,jdbcType=VARCHAR}
     </update>
 
     <!--模糊 查询对象-->
-    <select id="selectListUseDyc" parameterType="com.tt.javaserver.web.vo.App" resultMap="BaseResultMap">
+    <select id="selectList" parameterType="com.tt.javaserver.web.vo.App" resultMap="BaseResultMap">
         select *
         from tl_app_info
         <where>
@@ -76,7 +76,7 @@
     </select>
 
     <!--查询对象个数-->
-    <select id="selectCountUserDyc" parameterType="com.tt.javaserver.web.vo.App" resultType="java.lang.Integer">
+    <select id="selectCount" parameterType="com.tt.javaserver.web.vo.App" resultType="java.lang.Integer">
         select count(1)
         from tl_app_info
         <where>
@@ -98,21 +98,19 @@
         WHERE app_code = #{appCode};
     </select>
 
-    <!--通过appcode查询对象-->
-    <select id="selectByAppcode" parameterType="com.tt.javaserver.web.vo.App" resultType="java.lang.Integer">
+
+    <!--&lt;!&ndash; 通过主键批量删除&ndash;&gt;-->
+    <!--<delete id="deleteList">-->
+    <!--delete from tl_app_info where tl_app_info.id in-->
+    <!--<foreach close=")" collection="array" item="pks" open="(" separator=",">-->
+    <!--#{pks}-->
+    <!--</foreach>-->
+    <!--</delete>-->
+
+    <select id="selectAppTotal" parameterType="com.tt.javaserver.web.vo.App" resultType="java.lang.Integer">
         select count(1)
         from tl_app_info
         WHERE app_code = #{appCode};
     </select>
-
-
-    <!-- 通过主键批量删除-->
-    <delete id="deleteList">
-        delete from tl_app_info where tl_app_info.id in
-        <foreach close=")" collection="array" item="pks" open="(" separator=",">
-            #{pks}
-        </foreach>
-
-    </delete>
 
 </mapper>

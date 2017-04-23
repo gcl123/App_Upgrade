@@ -122,21 +122,21 @@ public class Action {
     }
 
 
-//    @Override
-//    public String toString() {
-//        return "Action{" +
-//                "code='" + code + '\'' +
-//                ", name='" + name + '\'' +
-//                ", vaild=" + vaild +
-//                ", var1='" + var1 + '\'' +
-//                ", var2='" + var2 + '\'' +
-//                ", var3='" + var3 + '\'' +
-//                ", var4='" + var4 + '\'' +
-//                ", var5='" + var5 + '\'' +
-//                ", updateTime=" + updateTime +
-//                ", createTime=" + createTime +
-//                ", remark='" + remark + '\'' +
-//                ", description='" + description + '\'' +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "Action{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", vaild=" + vaild +
+                ", var1='" + var1 + '\'' +
+                ", var2='" + var2 + '\'' +
+                ", var3='" + var3 + '\'' +
+                ", var4='" + var4 + '\'' +
+                ", var5='" + var5 + '\'' +
+                ", updateTime=" + updateTime +
+                ", createTime=" + createTime +
+                ", remark='" + remark + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

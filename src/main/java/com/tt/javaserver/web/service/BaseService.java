@@ -13,8 +13,7 @@ public interface BaseService<T> {
     //修改单个对象
     int update(T entity);
 
-    //删除单个对象
-    int delete(int id) throws Exception;
+    int delete(T entity);
 
     //通过主键（数组）批量删除数据
     int deleteList(String[] pks) throws Exception;
@@ -30,4 +29,5 @@ public interface BaseService<T> {
     int selectCount(T entity);
 
     int getID(T entity);
+
 }

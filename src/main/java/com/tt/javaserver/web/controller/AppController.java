@@ -1,6 +1,5 @@
 package com.tt.javaserver.web.controller;
 
-import com.tt.javaserver.web.model.ResultCode;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.AppService;
 import com.tt.javaserver.web.vo.App;
@@ -37,7 +36,7 @@ public class AppController extends BaseController {
     @RequestMapping("/add")
     @ResponseBody
     public SimpleResult<Map> insert(App app) {
-        System.out.println("=============");
+        System.out.println("insert=============");
         System.out.println(app);
 
         addCreateTime(app);
@@ -51,21 +50,15 @@ public class AppController extends BaseController {
             flag = -1;
             e.printStackTrace();
         }
-        if (flag > 0) {
-            result.setCode(ResultCode.OK.getCode());
-            result.setMsg(ResultCode.OK.getMsg());
-            try {
-                data.put("id", appService.getID(app));
-            } catch (Exception e) {
-                data.put("id", null);
-                e.printStackTrace();
-            }
-        } else {
-            result.setCode(ResultCode.ERROR.getCode());
-            result.setMsg(ResultCode.ERROR.getMsg());
+        setResult(result, flag);
+        try {
+            data.put("id", appService.getID(app));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         result.setData(data);
 
+        System.out.println("result====" + result);
         return result;
 
     }
@@ -80,8 +73,8 @@ public class AppController extends BaseController {
     @ResponseBody
     public SimpleResult<Map> query(App app) {
 
-        System.out.println("=============");
-        System.out.println(app.toString());
+        System.out.println("query=============");
+        System.out.println(app);
 
         List<App> appList = appService.selectList(app);
         int total = appService.selectCount(app);
@@ -89,19 +82,12 @@ public class AppController extends BaseController {
         SimpleResult<Map> result = new SimpleResult<>();
         Map<String, Object> data = new HashMap<>();
 
-        if (total > 0 && appList != null) {
-            result.setCode(ResultCode.OK.getCode());
-            result.setMsg(ResultCode.OK.getMsg());
-            data.put("total", total);
-            data.put("apps", appList);
-        } else {
-            result.setCode(ResultCode.ERROR.getCode());
-            result.setMsg(ResultCode.ERROR.getMsg());
-        }
+        setResult(result, total);
 
+        data.put("total", total);
+        data.put("apps", appList);
         result.setData(data);
         return result;
-
     }
 
 
@@ -112,23 +98,20 @@ public class AppController extends BaseController {
      * @throws Exception
      */
     @RequestMapping("/update")
+    @ResponseBody
     public SimpleResult<Map> update(App app) {
-        System.out.println("=============");
+        System.out.println("update=============");
         System.out.println(app.toString());
         addUpdateTime(app);
+
         int i = appService.update(app);
+        System.out.println("update=====late======" + i);
+
 
         SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
+        setResult(result, i);
 
-        if (i > 0) {
-            result.setCode(ResultCode.OK.getCode());
-            result.setMsg(ResultCode.OK.getMsg());
-        } else {
-            result.setCode(ResultCode.ERROR.getCode());
-            result.setMsg(ResultCode.ERROR.getMsg());
-        }
-
+        System.out.println("result====" + result);
         return result;
 
     }
@@ -141,25 +124,16 @@ public class AppController extends BaseController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public SimpleResult<Map> delete(App app) {
-        System.out.println("=============");
-        System.out.println(app.toString());
-        int i = 0;
-        try {
-            int id = app.getId();
-            i = appService.delete(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public SimpleResult<Map> delete(App app) throws Exception {
+        System.out.println("delete=============");
+        System.out.println(app);
+        int i = -1;
+
+        i = appService.delete(app);
         SimpleResult<Map> result = new SimpleResult<>();
         Map<String, Object> data = new HashMap<>();
-        if (i > 0) {
-            result.setCode(ResultCode.OK.getCode());
-            result.setMsg(ResultCode.OK.getMsg());
-        } else {
-            result.setCode(ResultCode.ERROR.getCode());
-            result.setMsg(ResultCode.ERROR.getMsg());
-        }
+        setResult(result, i);
+
         return result;
     }
 

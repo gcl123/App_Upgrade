@@ -33,13 +33,7 @@ public class AppFilesServiceImpl extends BaseServiceImpl<AppFiles> implements Ap
 
 
     @Override
-    public int update(AppFiles appFiles) {
-        return appFilesMapper.update(appFiles);
-    }
-
-    @Override
-    public int insert(AppFiles appFiles) throws Exception {
-        System.out.println("appfile=======");
-        return appFilesMapper.insert(appFiles);
+    public int delete(AppFiles appFiles) {
+        return appFilesMapper.deleteByInt(appFiles.getFileId());
     }
 }

@@ -34,9 +34,8 @@ public class AppFilesController extends BaseController {
         addUpdateAndCreateTime(appFiles);
         int i;
         try {
-            System.out.println(123 + ";;;;;;;;;;;");
+//            System.out.println(123 + ";;;;;;;;;;;");
             i = appFilesService.insert(appFiles);
-            System.out.println(i + ";;;;;;;;;;;");
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();
@@ -137,7 +136,7 @@ public class AppFilesController extends BaseController {
 
         int i = 0;
         try {
-            i = appFilesService.delete(appFiles.getAppVersionId());
+            i = appFilesService.delete(appFiles);
         } catch (Exception e) {
             e.printStackTrace();
         }

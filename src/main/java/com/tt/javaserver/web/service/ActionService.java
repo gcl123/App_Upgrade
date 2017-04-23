@@ -8,6 +8,4 @@ import com.tt.javaserver.web.vo.Action;
 
 public interface ActionService extends BaseService<Action> {
 
-    void delete(String code);
-//    int insert(Action action);
 }

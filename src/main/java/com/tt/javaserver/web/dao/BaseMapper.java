@@ -16,7 +16,9 @@ public interface BaseMapper<T> {
     int insert(T entity);
 
     //    删除对象
-    int delete(int id);
+    int deleteByInt(int id);
+
+    int deleteByStr(String str);
 
     //    更新对象
     int update(T entity);
@@ -27,10 +29,7 @@ public interface BaseMapper<T> {
     //    通过关键字迷糊查询数据列表
     List<T> selectList(T entity);
 
-    //   查询对象个数
-    int selectVersionTotal(T entity);
-
-
+    int selectRecord(T entity);
 
     //    查询单个对象
     T select(T entity);

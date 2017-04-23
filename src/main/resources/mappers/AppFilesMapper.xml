@@ -14,7 +14,8 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
-    <!--增加app文件对应信息-->
+
+    <!--插入动作指令  -->
     <insert id="insert" parameterType="com.tt.javaserver.web.vo.AppFiles">
         insert into tl_app_files (
         app_version_id, file_id,
@@ -28,7 +29,7 @@
     </insert>
 
     <!--删除app文件对应-->
-    <delete id="delete" parameterType="com.tt.javaserver.web.vo.AppFiles">
+    <delete id="deleteByInt" parameterType="com.tt.javaserver.web.vo.AppFiles">
         delete from tl_app_files
         where app_version_id = #{appVersionId,jdbcType=INTEGER}
         and file_id = #{fileId,jdbcType=INTEGER}
@@ -66,14 +67,14 @@
     </select>
 
     <!--根据id 统计文件对应版本数量-->
-    <select id="selectCountVersions" parameterType="java.lang.Integer" resultMap="java.lang.Integer">
+    <select id="selectCountVersions" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select COUNT(1)
         from tl_app_files
         where file_id = #{fileId,jdbcType=INTEGER}
     </select>
 
     <!--根据id 统计软件版本对应文件数量数量-->
-    <select id="selectCountFiles" parameterType="java.lang.Integer" resultMap="java.lang.Integer">
+    <select id="selectCountFiles" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         select COUNT(1)
         from tl_app_files
         where app_version_id = #{appVersionId,jdbcType=INTEGER}

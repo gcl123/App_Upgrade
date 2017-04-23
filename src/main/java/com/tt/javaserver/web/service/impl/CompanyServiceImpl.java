@@ -4,8 +4,6 @@ import com.tt.javaserver.web.service.CompanyService;
 import com.tt.javaserver.web.vo.Company;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Created by GCL on 17/4/17.
  */
@@ -14,49 +12,19 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
 
 
     @Override
-    public int insert(Company entity) throws Exception {
-        int appTotal = companyMapper.selectByCode(entity.getCode());
-        if (appTotal < 1) {
-            return companyMapper.insert(entity);
+    public int insert(Company company) throws Exception {
+        int Total = companyMapper.selectRecord(company);
+        System.out.println("total=====" + Total);
+        if (Total != 0) {
+            return -1;
         }
-        return -1;
-    }
+        return companyMapper.insert(company);
 
-    @Override
-    public int update(Company entity) {
-        return companyMapper.update(entity);
-    }
-
-    @Override
-    public int delete(int id) throws Exception {
-        return companyMapper.delete(id);
     }
 
 
     @Override
-    public int deleteList(String[] pks) throws Exception {
-        return companyMapper.deleteList(pks);
+    public int delete(Company company) {
+        return companyMapper.deleteByStr(company.getCode());
     }
-
-    @Override
-    public Company select(Company entity) {
-        return companyMapper.select(entity);
-    }
-
-    @Override
-    public List<Company> selectList(Company entity) {
-        return companyMapper.selectList(entity);
-    }
-
-    @Override
-    public int selectCount(Company entity) {
-        System.out.println("base............." + entity);
-        return companyMapper.selectCount(entity);
-    }
-
-    @Override
-    public int getID(Company entity) {
-        return companyMapper.selectID(entity);
-    }
-
 }
