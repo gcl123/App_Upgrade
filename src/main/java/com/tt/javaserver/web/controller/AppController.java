@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,27 +37,7 @@ public class AppController extends BaseController {
         System.out.println("insert=============");
         System.out.println(app);
 
-        addCreateTime(app);
-        addUpdateTime(app);
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-        int flag = 0;
-        try {
-            flag = appService.insert(app);
-        } catch (Exception e) {
-            flag = -1;
-            e.printStackTrace();
-        }
-        setResult(result, flag);
-        try {
-            data.put("id", appService.getID(app));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        result.setData(data);
-
-        System.out.println("result====" + result);
-        return result;
+        return appService.insert(app);
 
     }
 
@@ -75,19 +53,7 @@ public class AppController extends BaseController {
 
         System.out.println("query=============");
         System.out.println(app);
-
-        List<App> appList = appService.selectList(app);
-        int total = appService.selectCount(app);
-
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-
-        setResult(result, total);
-
-        data.put("total", total);
-        data.put("apps", appList);
-        result.setData(data);
-        return result;
+        return appService.select(app);
     }
 
 
@@ -102,17 +68,7 @@ public class AppController extends BaseController {
     public SimpleResult<Map> update(App app) {
         System.out.println("update=============");
         System.out.println(app.toString());
-        addUpdateTime(app);
-
-        int i = appService.update(app);
-        System.out.println("update=====late======" + i);
-
-
-        SimpleResult<Map> result = new SimpleResult<>();
-        setResult(result, i);
-
-        System.out.println("result====" + result);
-        return result;
+        return appService.update(app);
 
     }
 
@@ -127,34 +83,10 @@ public class AppController extends BaseController {
     public SimpleResult<Map> delete(App app) throws Exception {
         System.out.println("delete=============");
         System.out.println(app);
-        int i = -1;
 
-        i = appService.delete(app);
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-        setResult(result, i);
-
-        return result;
+        return appService.deleteByStr(app.getAppCode());
     }
 
-
-    /**
-     * 设置更新时间
-     *
-     * @param app
-     */
-    public void addUpdateTime(App app) {
-        app.setUpdateTime(getCurrentTime());
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param app
-     */
-    public void addCreateTime(App app) {
-        app.setCreateTime(getCurrentTime());
-    }
 
 
 }

@@ -93,6 +93,13 @@
     </select>
 
 
+    <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.Action" resultType="java.lang.Integer">
+        select count(1)
+        from tl_action_info
+        WHERE code = #{code};
+    </select>
+
+
     <!-- 通过主键批量删除-->
     <delete id="deleteList">
         delete from tl_action_info where tl_action_info.code in

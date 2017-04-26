@@ -20,7 +20,7 @@
 
 
     <!--插入动作指令  -->
-    <insert id="insert" parameterType="com.tt.javaserver.web.vo.App">
+    <insert id="insert" parameterType="com.tt.javaserver.web.vo.App" keyProperty="id" useGeneratedKeys="true">
         insert into tl_app_info (id ,app_code, app_name, latest_version,
         limit_version, description, company_id,
         var1, var2, var3, var4, var5, update_time, create_time, remark)
@@ -107,7 +107,7 @@
     <!--</foreach>-->
     <!--</delete>-->
 
-    <select id="selectAppTotal" parameterType="com.tt.javaserver.web.vo.App" resultType="java.lang.Integer">
+    <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.App" resultType="java.lang.Integer">
         select count(1)
         from tl_app_info
         WHERE app_code = #{appCode};

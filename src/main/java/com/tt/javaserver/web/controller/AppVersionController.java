@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,28 +28,7 @@ public class AppVersionController extends BaseController {
         System.out.println("====add====");
         System.out.println(appVersion.toString());
 
-        addUpdateAndCreateTime(appVersion);
-        int i;
-        try {
-            i = appVersionService.insert(appVersion);
-        } catch (Exception e) {
-            i = -1;
-        }
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-
-        setResult(result, i);
-        try {
-            data.put("id", appVersionService.getID(appVersion));
-        } catch (Exception e) {
-            data.put("id", null);
-            e.printStackTrace();
-        }
-        result.setData(data);
-        System.out.println(result.toString());
-
-        return result;
-
+        return appVersionService.insert(appVersion);
     }
 
 
@@ -67,16 +44,7 @@ public class AppVersionController extends BaseController {
         System.out.println("=============");
         System.out.println(appVersion.toString());
 
-        int total = appVersionService.selectCount(appVersion);
-        List<AppVersion> appVersionList = appVersionService.selectList(appVersion);
-
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-        setResult(result, total);
-        data.put("total", total);
-        data.put("appVersions", appVersionList);
-        result.setData(data);
-        return result;
+        return appVersionService.select(appVersion);
     }
 
 
@@ -92,15 +60,7 @@ public class AppVersionController extends BaseController {
         System.out.println("=============");
         System.out.println(appVersion.toString());
 
-        addUpdateTime(appVersion);
-        int i = appVersionService.update(appVersion);
-        SimpleResult<Map> result = new SimpleResult<>();
-        setResult(result, i);
-
-        System.out.println(result);
-        return result;
-
-
+        return appVersionService.update(appVersion);
     }
 
     /**
@@ -115,32 +75,7 @@ public class AppVersionController extends BaseController {
         System.out.println("=============");
         System.out.println(appVersion.toString());
 
-        int i = appVersionService.delete(appVersion);
-        SimpleResult<Map> result = new SimpleResult<>();
-
-        setResult(result, i);
-        return result;
+        return appVersionService.delete(appVersion);
     }
-
-
-    /**
-     * 设置创建时间和更新时间
-     *
-     * @param appVersion
-     */
-    public void addUpdateAndCreateTime(AppVersion appVersion) {
-        appVersion.setUpdateTime(getCurrentTime());
-        appVersion.setCreateTime(getCurrentTime());
-    }
-
-    /**
-     * 设置更新时间
-     *
-     * @param appVersion
-     */
-    public void addUpdateTime(AppVersion appVersion) {
-        appVersion.setUpdateTime(getCurrentTime());
-    }
-
 
 }

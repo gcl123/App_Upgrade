@@ -5,10 +5,10 @@
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <display-name>GCL WEB</display-name>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <!--<welcome-file>index.jsp</welcome-file>-->
         <!--<welcome-file>testFile/action.jsp</welcome-file>-->
         <!--<welcome-file>testFile/app.jsp</welcome-file>-->
-        <!--<welcome-file>testFile/appFiles.jsp</welcome-file>-->
+        <welcome-file>testFile/appFiles.jsp</welcome-file>
         <!--<welcome-file>testFile/appVersion.jsp</welcome-file>-->
         <!--<welcome-file>testFile/company.jsp</welcome-file>-->
         <!--<welcome-file>testFile/file.jsp</welcome-file>-->

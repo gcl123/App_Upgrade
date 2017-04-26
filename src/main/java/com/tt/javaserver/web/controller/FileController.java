@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,24 +29,7 @@ public class FileController extends BaseController {
         System.out.println("add=====");
         System.out.println(file.toString());
 
-        addUpdateAndCreateTime(file);
-        int i;
-        try {
-            i = fileService.insert(file);
-        } catch (Exception e) {
-            i = -1;
-        }
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-
-        setResult(result, i);
-        data.put("id", file.getId());
-
-        result.setData(data);
-        System.out.println(result.toString());
-
-        return result;
-
+        return fileService.insert(file);
     }
 
 
@@ -64,17 +45,7 @@ public class FileController extends BaseController {
         System.out.println("query=========");
         System.out.println(file.toString());
 
-        int total = fileService.selectCount(file);
-        List<File> fileList = fileService.selectList(file);
-
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-        setResult(result, total);
-        data.put("total", total);
-        data.put("files", fileList);
-        result.setData(data);
-        System.out.println(result.toString());
-        return result;
+        return fileService.select(file);
     }
 
 
@@ -90,15 +61,7 @@ public class FileController extends BaseController {
         System.out.println("update===========");
         System.out.println(file.toString());
 
-        addUpdateTime(file);
-        int i = fileService.update(file);
-        SimpleResult<Map> result = new SimpleResult<>();
-        setResult(result, i);
-
-        System.out.println(result);
-        return result;
-
-
+        return fileService.update(file);
     }
 
     /**
@@ -113,37 +76,7 @@ public class FileController extends BaseController {
         System.out.println("=============");
         System.out.println(file.toString());
 
-        int i = 0;
-        try {
-            i = fileService.delete(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        SimpleResult<Map> result = new SimpleResult<>();
-
-        setResult(result, i);
-        return result;
+        return fileService.delete(file);
     }
-
-
-    /**
-     * 设置创建时间和更新时间
-     *
-     * @param file
-     */
-    public void addUpdateAndCreateTime(File file) {
-        file.setUpdateTime(getCurrentTime());
-        file.setCreateTime(getCurrentTime());
-    }
-
-    /**
-     * 设置更新时间
-     *
-     * @param file
-     */
-    public void addUpdateTime(File file) {
-        file.setUpdateTime(getCurrentTime());
-    }
-
 
 }

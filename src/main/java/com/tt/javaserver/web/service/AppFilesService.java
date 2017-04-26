@@ -1,9 +1,8 @@
 package com.tt.javaserver.web.service;
 
+import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.vo.AppFiles;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by GCL on 17/4/15.
@@ -11,11 +10,9 @@ import java.util.List;
 @Service
 public interface AppFilesService extends BaseService<AppFiles> {
 
-    List<AppFiles> selectFiles(int appVersionId);
+    SimpleResult selectVersionsByFileId(int fileId);
 
-    List<AppFiles> selectVersions(int fileId);
+    SimpleResult selectFilesByVersionId(int appVersionId);
 
-    int selectCountFiles(int appVersionId);
 
-    int selectCountVersions(int fileId);
 }

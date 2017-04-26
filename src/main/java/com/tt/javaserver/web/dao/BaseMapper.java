@@ -20,6 +20,8 @@ public interface BaseMapper<T> {
 
     int deleteByStr(String str);
 
+    int delete(T entity);
+
     //    更新对象
     int update(T entity);
 
@@ -29,6 +31,7 @@ public interface BaseMapper<T> {
     //    通过关键字迷糊查询数据列表
     List<T> selectList(T entity);
 
+    //    查询记录个数
     int selectRecord(T entity);
 
     //    查询单个对象

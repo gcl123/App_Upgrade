@@ -1,10 +1,14 @@
 package com.tt.javaserver.web.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by feng on 16/7/15.
  */
 public class SimpleResult<T> {
 
+    //code 0:成功 -1:失败 -2 :数据为空
     private int code;
 
     private String msg;
@@ -12,6 +16,20 @@ public class SimpleResult<T> {
     private T data;
 
     public SimpleResult() {
+    }
+
+    public SimpleResult(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public SimpleResult(int code, String msg, int total, String name, Object object) {
+        this.code = code;
+        this.msg = msg;
+        Map<String, Object> map = new HashMap();
+        map.put("total", total);
+        map.put(name, object);
+        this.setData((T) map);
     }
 
     public int getCode() {

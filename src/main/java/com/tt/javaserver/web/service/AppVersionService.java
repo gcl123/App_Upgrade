@@ -1,5 +1,6 @@
 package com.tt.javaserver.web.service;
 
+import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.vo.AppVersion;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface AppVersionService extends BaseService<AppVersion> {
-    int delete(AppVersion appVersion);
+    SimpleResult delete(AppVersion appVersion);
 }
 

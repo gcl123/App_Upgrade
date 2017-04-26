@@ -41,7 +41,7 @@
                             function () {
                                 $.post(
                                         "company/add.action",
-                                        {code: "31", name: "tooooo", vaild: "1"},
+                                        {code: "38", name: "8888888", vaild: "1"},
                                         function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);

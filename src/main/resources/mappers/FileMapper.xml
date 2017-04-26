@@ -38,9 +38,10 @@
 
 
     <!--根据文件Id删除文件-->
-    <delete id="deleteByInt" parameterType="java.lang.Integer">
+    <delete id="delete" parameterType="com.tt.javaserver.web.vo.File">
         delete from tl_file_info
         where id = #{id,jdbcType=INTEGER}
+        AND app_id = #{appId}
     </delete>
 
     <!--更新文件信息-->
@@ -106,7 +107,7 @@
     </select>
 
     <!--查询对象个数-->
-    <select id="selectFileTotal" parameterType="com.tt.javaserver.web.vo.File" resultType="java.lang.Integer">
+    <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.File" resultType="java.lang.Integer">
         select count(1)
         from tl_file_info
         WHERE id = #{id}

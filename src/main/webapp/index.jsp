@@ -6,7 +6,7 @@
 <html>
 <head>
 
-    <c:set var="proPath" value="${pageContext.request.contextPath}"/>
+    <c:set var="proPath" value="http://127.0.0.1:8080/${pageContext.request.contextPath}"/>
     <link rel="stylesheet" type="text/css" href="${proPath}/static/css/easyui.css">
     <link rel="stylesheet" type="text/css" href="${proPath}/static/css/icon.css">
     <script type="text/javascript" src="${proPath}/static/js/jquery.min.js"></script>
@@ -22,10 +22,14 @@
                                         "company/query.action",
                                         {code: "8", name: "", vaild: "1"},
                                         function (jsonResult) {
+                                            alert(proPath);
+
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);
+
                                             }
+
                                         },
                                         "json"
                                 );
@@ -89,6 +93,7 @@
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);
                                             }
+
                                         },
                                         "json"
                                 );

@@ -21,14 +21,14 @@
 
 
     <!--插入动作指令  -->
-    <insert id="insert" parameterType="com.tt.javaserver.web.vo.Company">
-        insert into tl_company_info (id, code, name,
+    <insert id="insert" parameterType="com.tt.javaserver.web.vo.Company" keyProperty="id" useGeneratedKeys="true">
+        insert into tl_company_info (code, name,
         short_name, mobile, contact,
         url, var1, var2, var3,
         var4, var5, update_time,
         create_time, remark, description
         )
-        values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+        values ( #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
         #{shortName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR},
         #{url,jdbcType=VARCHAR}, #{var1,jdbcType=VARCHAR}, #{var2,jdbcType=VARCHAR}, #{var3,jdbcType=VARCHAR},
         #{var4,jdbcType=VARCHAR}, #{var5,jdbcType=VARCHAR}, #{updateTime,jdbcType=INTEGER},

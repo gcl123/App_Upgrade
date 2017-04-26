@@ -1,11 +1,10 @@
 package com.tt.javaserver.web.service.impl;
 
 import com.tt.javaserver.web.dao.*;
+import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by GCL on 17/4/15.
@@ -36,49 +35,42 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     protected CompanyMapper companyMapper;
 
 
+
     @Override
-    public int insert(T entity) throws Exception {
-        System.out.println("base=======insert" + entity);
-        return baseMapper.insert(entity);
+    public SimpleResult deleteByStr(String code) {
+        return null;
     }
 
     @Override
-    public int update(T entity) {
-        System.out.println("update__baseServiceImpl======" + entity);
-        return baseMapper.update(entity);
+    public SimpleResult deleteByInt(int id) {
+        return null;
     }
 
     @Override
-    public int delete(T entity) {
-        return 0;
-    }
-
-
-    @Override
-    public int deleteList(String[] pks) throws Exception {
-        return baseMapper.deleteList(pks);
+    public SimpleResult insert(T entity) {
+        return null;
     }
 
     @Override
-    public T select(T entity) {
-        return (T) baseMapper.select(entity);
+    public SimpleResult update(T entity) {
+        return null;
     }
 
     @Override
-    public List<T> selectList(T entity) {
-        System.out.println("baseServiceimple===selectList" + entity);
-
-        return baseMapper.selectList(entity);
+    public SimpleResult select(T entity) {
+        return null;
     }
 
-    @Override
-    public int selectCount(T entity) {
-        System.out.println("baseServiceimple===selectcount" + entity);
-        return baseMapper.selectCount(entity);
-    }
-
-    @Override
-    public int getID(T entity) {
-        return baseMapper.selectID(entity);
+    /**
+     * 获得当前时间
+     *
+     * @return
+     */
+    public long getCurrentTime() {
+        long time = System.currentTimeMillis();
+//        SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
+//        String StrFormatNowDate = sdFormatter.format(ct);
+//        long time = Long.parseLong(StrFormatNowDate);
+        return time;
     }
 }

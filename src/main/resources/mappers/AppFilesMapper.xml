@@ -29,10 +29,9 @@
     </insert>
 
     <!--删除app文件对应-->
-    <delete id="deleteByInt" parameterType="com.tt.javaserver.web.vo.AppFiles">
+    <delete id="deleteByInt" parameterType="java.lang.Integer">
         delete from tl_app_files
         where app_version_id = #{appVersionId,jdbcType=INTEGER}
-        and file_id = #{fileId,jdbcType=INTEGER}
     </delete>
 
     <!--更新软件文件表-->
@@ -80,6 +79,13 @@
         where app_version_id = #{appVersionId,jdbcType=INTEGER}
     </select>
 
+    <!--查询记录-->
+    <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.AppFiles" resultType="java.lang.Integer">
+        select COUNT(1)
+        from tl_app_files
+        where app_version_id = #{appVersionId,jdbcType=INTEGER}
+        AND file_id = #{fileId}
+    </select>
 
     <!--&lt;!&ndash;<insert id="insertSelective" parameterType="com.tt.javaserver.web.vo.AppFiles">&ndash;&gt;-->
     <!--&lt;!&ndash;insert into tl_app_files&ndash;&gt;-->

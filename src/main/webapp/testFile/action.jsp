@@ -20,7 +20,7 @@
                             function () {
                                 $.post(
                                         "action/query.action",
-                                        {code: "8", name: "", vaild: "1"},
+                                        {code: "8", name: " ", vaild: "1"},
                                         function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
@@ -62,7 +62,7 @@
                             function () {
                                 $.post(
                                         "action/delete.action",
-                                        {code: "31", name: "tooooo", vaild: "1"},
+                                        {code: "33", name: "tooooo", vaild: "1"},
                                         function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
@@ -83,7 +83,7 @@
                             function () {
                                 $.post(
                                         "action/update.action",
-                                        {code: "88", name: "tooooo", vaild: "1"},
+                                        {code: "889", name: "tooooo", vaild: "1"},
                                         function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);

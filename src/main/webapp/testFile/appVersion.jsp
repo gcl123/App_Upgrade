@@ -41,7 +41,7 @@
                             function () {
                                 $.post(
                                         "version/add.action",
-                                        {appId: "1", version: "1.0", setupScript: "ok", status: "1"},
+                                        {appId: "11", version: "1.0", setupScript: "ok", status: "1"},
                                         function (jsonResult) {
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);

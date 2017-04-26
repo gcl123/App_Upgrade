@@ -1,10 +1,11 @@
 package com.tt.javaserver.web.controller;
 
-import com.tt.javaserver.web.vo.User;
 import com.tt.javaserver.web.service.IUserService;
+import com.tt.javaserver.web.vo.User;
 import org.springframework.stereotype.Controller;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -35,6 +36,5 @@ public class UserController {
         System.out.print("Json=====" + user);
         return "user";
     }
-
 
 }

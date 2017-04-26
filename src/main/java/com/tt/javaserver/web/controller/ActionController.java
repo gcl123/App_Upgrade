@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,32 +25,11 @@ public class ActionController extends BaseController {
      */
     @RequestMapping("/add")
     @ResponseBody
-    public SimpleResult<Map> insert(Action action) {
-        System.out.println("====add====");
-        System.out.println(action.toString());
+    public SimpleResult<Map> insert(Action action) throws Exception {
+        System.out.println("====add====" + action);
+        System.out.println(action);
 
-        addCreateTime(action);
-        addUpdateTime(action);
-
-        int i = 0;
-        try {
-            i = actionService.insert(action);
-        } catch (Exception e) {
-            i = 0;
-            e.printStackTrace();
-        }
-
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-
-        setResult(result,i);
-        data.put("code", action.getCode());
-        result.setData(data);
-
-        System.out.println(result);
-
-        return result;
-
+        return actionService.insert(action);
     }
 
 
@@ -65,20 +42,11 @@ public class ActionController extends BaseController {
     @RequestMapping("/query")
     @ResponseBody
     public SimpleResult<Map> query(Action action) {
-        System.out.println("=============query");
+        System.out.println("=============");
         System.out.println(action.toString());
 
-        int total = actionService.selectCount(action);
-        List<Action> actionList = actionService.selectList(action);
+        return actionService.select(action);
 
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-
-        setResult(result,total);
-        data.put("total", total);
-        data.put("actions", actionList);
-        result.setData(data);
-        return result;
     }
 
 
@@ -91,18 +59,10 @@ public class ActionController extends BaseController {
     @RequestMapping("/update")
     @ResponseBody
     public SimpleResult<Map> update(Action action) {
-        System.out.println("=============");
-        System.out.println(action);
-        addUpdateTime(action);
-        int i = actionService.update(action);
-        SimpleResult<Map> result = new SimpleResult<>();
+        System.out.println("update=============" + action);
+        System.out.println(action.toString());
 
-        setResult(result,i);
-        System.out.println(result);
-
-        return result;
-
-
+        return actionService.update(action);
     }
 
     /**
@@ -117,32 +77,8 @@ public class ActionController extends BaseController {
         System.out.println("=============");
         System.out.println(action.toString());
 
-        String code = action.getCode();
-        actionService.delete(action);
-        int i = actionService.update(action);
-        SimpleResult<Map> result = new SimpleResult<>();
+        return actionService.deleteByStr(action.getCode());
 
-        setResult(result,i);
-
-        return result;
-    }
-
-    /**
-     * 设置更新时间
-     *
-     * @param action
-     */
-    public void addUpdateTime(Action action) {
-        action.setUpdateTime(getCurrentTime());
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param action
-     */
-    public void addCreateTime(Action action) {
-        action.setCreateTime(getCurrentTime());
     }
 
 

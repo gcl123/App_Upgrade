@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,25 +29,7 @@ public class AppFilesController extends BaseController {
         System.out.println("====add====");
         System.out.println(appFiles.toString());
 
-        addUpdateAndCreateTime(appFiles);
-        int i;
-        try {
-//            System.out.println(123 + ";;;;;;;;;;;");
-            i = appFilesService.insert(appFiles);
-        } catch (Exception e) {
-            e.getMessage();
-            e.printStackTrace();
-            i = -1;
-        }
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-
-        setResult(result, i);
-
-        result.setData(data);
-        System.out.println(result.toString());
-
-        return result;
+        return appFilesService.insert(appFiles);
 
     }
 
@@ -66,17 +46,7 @@ public class AppFilesController extends BaseController {
         System.out.println("=============");
         System.out.println(appFiles.toString());
 
-        int total = appFilesService.selectCountVersions(appFiles.getFileId());
-        List<AppFiles> appVersionList = appFilesService.selectVersions(appFiles.getFileId());
-
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-        setResult(result, total);
-        data.put("total", total);
-        data.put("versions", appVersionList);
-        result.setData(data);
-        System.out.println(result.toString());
-        return result;
+        return appFilesService.selectVersionsByFileId(appFiles.getFileId());
     }
 
     @RequestMapping("/queryFiles")
@@ -85,17 +55,7 @@ public class AppFilesController extends BaseController {
         System.out.println("=============");
         System.out.println(appFiles.toString());
 
-        int total = appFilesService.selectCountFiles(appFiles.getAppVersionId());
-        List<AppFiles> appFilesList = appFilesService.selectFiles(appFiles.getAppVersionId());
-
-        SimpleResult<Map> result = new SimpleResult<>();
-        Map<String, Object> data = new HashMap<>();
-        setResult(result, total);
-        data.put("total", total);
-        data.put("files", appFilesList);
-        result.setData(data);
-        System.out.println(result.toString());
-        return result;
+        return appFilesService.selectFilesByVersionId(appFiles.getAppVersionId());
     }
 
     /**
@@ -110,16 +70,7 @@ public class AppFilesController extends BaseController {
         System.out.println("=============");
         System.out.println(appFiles.toString());
 
-        addUpdateTime(appFiles);
-
-        int i = appFilesService.update(appFiles);
-        SimpleResult<Map> result = new SimpleResult<>();
-        setResult(result, i);
-
-        System.out.println(result);
-        return result;
-
-
+        return appFilesService.update(appFiles);
     }
 
     /**
@@ -133,38 +84,9 @@ public class AppFilesController extends BaseController {
     public SimpleResult<Map> delete(AppFiles appFiles) {
         System.out.println("=============");
         System.out.println(appFiles.toString());
-
-        int i = 0;
-        try {
-            i = appFilesService.delete(appFiles);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        SimpleResult<Map> result = new SimpleResult<>();
-
-        setResult(result, i);
-        return result;
+        return appFilesService.deleteByInt(appFiles.getAppVersionId());
     }
 
-
-    /**
-     * 设置创建时间和更新时间
-     *
-     * @param appFiles
-     */
-    public void addUpdateAndCreateTime(AppFiles appFiles) {
-        appFiles.setUpdateTime(getCurrentTime());
-        appFiles.setCreateTime(getCurrentTime());
-    }
-
-    /**
-     * 设置更新时间
-     *
-     * @param appFiles
-     */
-    public void addUpdateTime(AppFiles appFiles) {
-        appFiles.setUpdateTime(getCurrentTime());
-    }
 
 
 }

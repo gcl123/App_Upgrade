@@ -57,24 +57,24 @@
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    <!-- 配置事务通知 -->
-    <tx:advice id="advice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <!-- 默认只处理运行时异常，可加rollback-for="Exception/Throwable"等处理所有异常或包括错误 -->
-            <tx:method name="insert*" propagation="REQUIRED"
-                       rollback-for="Exception"/>
-            <tx:method name="update*" propagation="REQUIRED"
-                       rollback-for="Exception"/>
-            <tx:method name="delete*" propagation="REQUIRED"
-                       rollback-for="Exception"/>
-            <tx:method name="*" propagation="SUPPORTS"/>
-        </tx:attributes>
-    </tx:advice>
-    <!-- 配置切面织入的范围,后边要把事务边界定在service层 -->
-    <aop:config>
-        <aop:advisor advice-ref="advice"
-                     pointcut="execution(* com.tt.javaserver.web.service.impl.*.*(..))"/>
-    </aop:config>
+    <!--&lt;!&ndash; 配置事务通知 &ndash;&gt;-->
+    <!--<tx:advice id="advice" transaction-manager="transactionManager">-->
+    <!--<tx:attributes>-->
+    <!--&lt;!&ndash; 默认只处理运行时异常，可加rollback-for="Exception/Throwable"等处理所有异常或包括错误 &ndash;&gt;-->
+    <!--<tx:method name="insert*" propagation="REQUIRED"-->
+    <!--rollback-for="Exception"/>-->
+    <!--<tx:method name="update*" propagation="REQUIRED"-->
+    <!--rollback-for="Exception"/>-->
+    <!--<tx:method name="delete*" propagation="REQUIRED"-->
+    <!--rollback-for="Exception"/>-->
+    <!--<tx:method name="*" propagation="SUPPORTS"/>-->
+    <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+    <!--&lt;!&ndash; 配置切面织入的范围,后边要把事务边界定在service层 &ndash;&gt;-->
+    <!--<aop:config>-->
+    <!--<aop:advisor advice-ref="advice"-->
+    <!--pointcut="execution(* com.tt.javaserver.web.service.impl.*.*(..))"/>-->
+    <!--</aop:config>-->
 
 
     <!--开启注解扫描-->
@@ -94,33 +94,6 @@
     </bean>
 
 
-    <!--&lt;!&ndash; 配置事务管理器,管理数据源事务处理 &ndash;&gt;-->
-    <!--<bean id="transactionManager"-->
-    <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
-    <!--<property name="dataSource" ref="dataSource" />-->
-    <!--</bean>-->
-    <!--&lt;!&ndash; 配置事务通知 &ndash;&gt;-->
-    <!--<tx:advice id="advice" transaction-manager="transactionManager">-->
-    <!--<tx:attributes>-->
-    <!--&lt;!&ndash; 默认只处理运行时异常，可加rollback-for="Exception/Throwable"等处理所有异常或包括错误 &ndash;&gt;-->
-    <!--<tx:method name="insert*" propagation="REQUIRED"-->
-    <!--rollback-for="Exception" />-->
-    <!--<tx:method name="update*" propagation="REQUIRED"-->
-    <!--rollback-for="Exception" />-->
-    <!--<tx:method name="delete*" propagation="REQUIRED"-->
-    <!--rollback-for="Exception" />-->
-    <!--<tx:method name="*" propagation="SUPPORTS" />-->
-    <!--</tx:attributes>-->
-    <!--</tx:advice>-->
-    <!--&lt;!&ndash; 配置切面织入的范围,后边要把事务边界定在service层 &ndash;&gt;-->
-    <!--<aop:config>-->
-    <!--<aop:advisor advice-ref="advice"-->
-    <!--pointcut="execution(* com.tt.javaserver.web.service.impl.*.*(..))" />-->
-    <!--</aop:config>-->
-    <!--&lt;!&ndash; 配置SessionTemplate，已封装了繁琐的数据操作 &ndash;&gt;-->
-    <!--<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">-->
-    <!--<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />-->
-    <!--</bean>-->
 
     <!-- <context:component-scan base-package="*" /> -->
 
