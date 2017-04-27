@@ -1,5 +1,6 @@
 package com.tt.javaserver.web.dao;
 
+import com.tt.javaserver.web.vo.Page;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,4 +43,9 @@ public interface BaseMapper<T> {
 
     //    查询ID
     int selectID(T entity);
+
+    List<T> selectPageListUseDyc(Page<T> page);
+
+    Integer selectPageCountUseDyc(Page<T> page);
 }
+

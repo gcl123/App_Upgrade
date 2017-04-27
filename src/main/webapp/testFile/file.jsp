@@ -22,7 +22,7 @@
                                 $.post(
                                         "file/add.action",
                                         {
-                                            id: "2",
+                                            id: "222",
                                             appId: "2",
                                             name: "soft",
                                             url: "http:local",

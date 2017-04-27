@@ -37,15 +37,16 @@
     </insert>
 
     <!--删除动作指令-->
-    <delete id="deleteByStr" parameterType="java.lang.String">
+    <delete id="deleteByInt" parameterType="java.lang.Integer">
         delete from tl_company_info
-        where code = #{code}
+        where id= #{id}
     </delete>
 
     <!--修改动作指令-->
     <update id="update" parameterType="com.tt.javaserver.web.vo.Company">
         update tl_company_info
         set
+        code = #{code},
         name = #{name,jdbcType=VARCHAR},
         short_name = #{shortName,jdbcType=VARCHAR},
         mobile = #{mobile,jdbcType=VARCHAR},
@@ -61,7 +62,7 @@
         </if>
         update_time = #{updateTime,jdbcType=INTEGER},
         remark = #{remark,jdbcType=VARCHAR}
-        where code = #{code,jdbcType=VARCHAR}
+        where id = #{id}
     </update>
 
 
@@ -109,6 +110,23 @@
         select count(1)
         from tl_company_info
         WHERE code = #{code};
+    </select>
+
+    <!-- 通过多条件分页查询，返回数据集 -->
+    <select id="selectPageListUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultMap="BaseResultMap">
+        select * from tl_company_info
+        <!--<where>-->
+        <!--<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>-->
+        <!--</where>-->
+        limit #{start},#{rows}
+    </select>
+
+    <!-- 通过多条件分页查询，返回总记录数 -->
+    <select id="selectPageCountUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultType="java.lang.Integer">
+        select count(1) from tl_company_info
+        <!--<where>-->
+        <!--<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>-->
+        <!--</where>-->
     </select>
 
 

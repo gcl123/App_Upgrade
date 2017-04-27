@@ -3,6 +3,7 @@ package com.tt.javaserver.web.controller;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.FileService;
 import com.tt.javaserver.web.vo.File;
+import com.tt.javaserver.web.vo.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -77,6 +78,16 @@ public class FileController extends BaseController {
         System.out.println(file.toString());
 
         return fileService.delete(file);
+    }
+
+    //通过关键字分页查询
+    @RequestMapping("/selectPageUseDyc")
+    @ResponseBody //如果返回json格式，需要这个注解，这里用来测试环境
+    public Object selectPageUseDyc(Page<File> page, File file) {
+
+        page.setParamEntity(file);
+        System.out.println("page==========:" + page);
+        return fileService.selectPageUseDyc(page);
     }
 
 }

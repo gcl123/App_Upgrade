@@ -3,6 +3,7 @@ package com.tt.javaserver.web.controller;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.CompanyService;
 import com.tt.javaserver.web.vo.Company;
+import com.tt.javaserver.web.vo.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -58,11 +59,22 @@ public class CompanyController extends BaseController {
 
     @RequestMapping("/delete")
     @ResponseBody
-    public SimpleResult<Map> delete(Company company) {
-        System.out.println("delete=========" + company);
+    public Object delete(Integer id) {
+        System.out.println("delete=========" + id);
 
-        return companyService.deleteByStr(company.getCode());
+        return companyService.deleteByInt(id);
+    }
 
+    //通过关键字分页查询
+    @RequestMapping("/selectPageUseDyc")
+    @ResponseBody //如果返回json格式，需要这个注解，这里用来测试环境
+    public Object selectPageUseDyc(Page<Company> page, Company company) {
+
+        company.setName(" ");
+        page.setParamEntity(company);
+        System.out.println("page==========:" + page + "=======" + company);
+
+        return companyService.selectPageUseDyc(page);
     }
 
 }

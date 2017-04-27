@@ -3,6 +3,7 @@ package com.tt.javaserver.web.service.impl;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.CompanyService;
 import com.tt.javaserver.web.vo.Company;
+import com.tt.javaserver.web.vo.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -37,12 +38,12 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
     }
 
     @Override
-    public SimpleResult<Map> deleteByStr(String code) {
+    public SimpleResult<Map> deleteByInt(int id) {
 
-        if (code == null) {
+        if (id == 0) {
             return new SimpleResult(-2, "数据为空");
         }
-        if (companyMapper.deleteByStr(code) == 1) {
+        if (companyMapper.deleteByInt(id) == 1) {
             SimpleResult<Map> result = new SimpleResult<>(0, "删除成功");
             return result;
         }
@@ -67,13 +68,25 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
         if (company == null) {
             return new SimpleResult(-2, "数据为空");
         }
+        System.out.println("Companyservice=======111");
         int total = companyMapper.selectCount(company);
         List<Company> companyList = companyMapper.selectList(company);
+        System.out.println("Companyservice=======222");
 
         if (total > 0 && companyList != null) {
             return new SimpleResult(0, "查询成功", total, "companys", companyList);
         }
         return new SimpleResult(-1, "查询失败");
+    }
+
+    @Override
+    public Map selectPageUseDyc(Page<Company> page) {
+        page.setList(companyMapper.selectPageListUseDyc(page));
+        page.setTotalRecord(companyMapper.selectPageCountUseDyc(page));
+
+        System.out.println("page========" + page.getPageMap());
+
+        return page.getPageMap();
     }
 
 

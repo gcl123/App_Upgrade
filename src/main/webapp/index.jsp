@@ -22,8 +22,6 @@
                                         "company/query.action",
                                         {code: "8", name: "", vaild: "1"},
                                         function (jsonResult) {
-                                            alert(proPath);
-
                                             for (i in jsonResult) {
                                                 str = JSON.stringify(jsonResult[i]);
                                                 alert(str);

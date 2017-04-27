@@ -3,6 +3,7 @@ package com.tt.javaserver.web.service.impl;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.FileService;
 import com.tt.javaserver.web.vo.File;
+import com.tt.javaserver.web.vo.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class FileServiceImpl extends BaseServiceImpl<File> implements FileServic
         return new SimpleResult(-1, "删除失败");
     }
 
+
     @Override
     public SimpleResult update(File file) {
         addUpdateTime(file);
@@ -72,6 +74,22 @@ public class FileServiceImpl extends BaseServiceImpl<File> implements FileServic
             return new SimpleResult(0, "查询成功", total, "files", fileList);
         }
         return new SimpleResult(-1, "查询失败");
+    }
+
+
+    /**
+     * 动态分页查询
+     *
+     * @param page
+     * @return
+     */
+    public Map selectPageUseDyc(Page<File> page) {
+        page.setList(fileMapper.selectPageListUseDyc(page));
+        page.setTotalRecord(fileMapper.selectPageCountUseDyc(page));
+
+        System.out.println("page========" + page.getPageMap());
+
+        return page.getPageMap();
     }
 
 

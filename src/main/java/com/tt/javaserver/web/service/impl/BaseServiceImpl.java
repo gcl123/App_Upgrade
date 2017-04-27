@@ -3,8 +3,11 @@ package com.tt.javaserver.web.service.impl;
 import com.tt.javaserver.web.dao.*;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.BaseService;
+import com.tt.javaserver.web.vo.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * Created by GCL on 17/4/15.
@@ -43,6 +46,11 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public SimpleResult deleteByInt(int id) {
+        return null;
+    }
+
+    @Override
+    public Map selectPageUseDyc(Page<T> page) {
         return null;
     }
 
