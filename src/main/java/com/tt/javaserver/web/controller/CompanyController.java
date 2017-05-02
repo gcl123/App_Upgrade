@@ -35,12 +35,19 @@ public class CompanyController extends BaseController {
         return companyService.insert(company);
     }
 
-    @RequestMapping("/query")
+    @RequestMapping("/search")
     @ResponseBody
     public SimpleResult<Map> query(Company company) {
-        System.out.print("company-query======" + company);
+        System.out.print("company-search======" + company);
 
         return companyService.select(company);
+    }
+
+    @RequestMapping("/queryList")
+    @ResponseBody
+    public Object queryList() {
+        System.out.print("company-queryList======" );
+        return companyService.queryList();
     }
 
     /**

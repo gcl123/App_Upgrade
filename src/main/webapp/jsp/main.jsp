@@ -91,7 +91,6 @@
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a id="curMd">首页</a>
 
-
             <!--
             <span id="curMd"  style="top:17px; margin-left:15px;"> 首页</span>
             a href="javascript:addTab('首页','pages/welcome.html')" >首&nbsp;&nbsp;页</a>
@@ -119,7 +118,14 @@
                 <ul show="true">
                     <li><a ref="appList">项目列表</a></li>
                     <li><a ref="appAppend">新增项目</a></li>
-                    　
+                 </ul>
+                <li><a ref="">当前项目</a></li>
+                <ul show="true">
+                    <li><a ref="appList">项目信息</a></li>
+                    <li><a ref="appList">文件上传</a></li>
+                    <li><a ref="appAppend">文件管理</a></li>
+                    <li><a ref="appAppend">安装脚本制作</a></li>
+                    <li><a ref="appAppend">安装脚本测试</a></li>
                 </ul>
                 <li><a ref="about">关于</a></li>
             </ul>

@@ -3,6 +3,7 @@ package com.tt.javaserver.web.service.impl;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.AppService;
 import com.tt.javaserver.web.vo.App;
+import com.tt.javaserver.web.vo.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -39,14 +40,17 @@ public class AppServiceImpl extends BaseServiceImpl<App> implements AppService {
     }
 
     @Override
-    public SimpleResult<Map> deleteByStr(String appCode) {
-        if (appCode == null) {
+    public SimpleResult<Map> deleteByInt(int  id) {
+        System.out.println("id=====before"+id);
+
+        if (id == 0) {
             return new SimpleResult(-2, "数据为空");
         }
-        if (appMapper.deleteByStr(appCode) == 1) {
+        if (appMapper.deleteByInt(id) == 1) {
+            System.out.println("id====="+id);
             SimpleResult<Map> result = new SimpleResult<>(0, "删除成功");
             Map<String, Object> data = new HashMap<>();
-            data.put("appCode", appCode);
+            data.put("id", id);
             result.setData(data);
             System.out.println("del=======" + result);
             return result;
@@ -79,6 +83,18 @@ public class AppServiceImpl extends BaseServiceImpl<App> implements AppService {
         }
         return new SimpleResult(-1, "查询失败");
     }
+
+
+    @Override
+    public Map selectPageUseDyc(Page<App> page) {
+        page.setList(appMapper.selectPageListUseDyc(page));
+        page.setTotalRecord(appMapper.selectPageCountUseDyc(page));
+
+        System.out.println("page========" + page.getPageMap());
+
+        return page.getPageMap();
+    }
+
 
     /**
      * 设置更新时间

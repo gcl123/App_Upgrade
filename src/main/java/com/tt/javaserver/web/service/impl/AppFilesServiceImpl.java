@@ -3,8 +3,11 @@ package com.tt.javaserver.web.service.impl;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.AppFilesService;
 import com.tt.javaserver.web.vo.AppFiles;
+import com.tt.javaserver.web.vo.AppVersion;
+import com.tt.javaserver.web.vo.File;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +31,89 @@ public class AppFilesServiceImpl extends BaseServiceImpl<AppFiles> implements Ap
             }
         }
         return new SimpleResult(-1, "插入失败,指令已存在");
+    }
+
+    @Override
+    public SimpleResult<Map> insertList(List<File> files, AppVersion version) {
+        if (files == null || version == null) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        int size = files.size();
+        if(appMapper.selectRecordById(version.getAppId())==0){
+            //第一次上传软件
+            if(appVersionMapper.selectRecord(version)==0){
+                if( appVersionMapper.insert(version)==1 ){
+                    Iterator it = files.iterator();
+                    while(it.hasNext()){
+                        File file = (File) it.next();
+                        System.out.println(file);
+                        if (fileMapper.selectRecord(file) == 0) {
+                            if(fileMapper.insert(file)==1){
+                                AppFiles appFiles = new AppFiles();
+                                appFiles.setAppVersionId(version.getId());
+                                appFiles.setFileId(file.getId());
+                                if(appFilesMapper.insert(appFiles)==1){
+                                    size--;
+                                }
+                            }
+                        }else {
+                            int fileId = fileMapper.selectIdByMD5(file);
+                            if(fileId != 0){
+                                AppFiles appFiles = new AppFiles();
+                                appFiles.setAppVersionId(version.getId());
+                                appFiles.setFileId(fileId);
+                                if(appFilesMapper.insert(appFiles)==1){
+                                    size--;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }else {
+                return new SimpleResult<>(-1,"该软件版本已存在");
+            }
+        }else{
+            if(appVersionMapper.selectRecord(version)==0 ){
+                if(appVersionMapper.insert(version)==1 ){
+                    Iterator it = files.iterator();
+                    while(it.hasNext()){
+                        File file = (File) it.next();
+                        int fileId = 0;
+                        try {
+                            fileId = fileMapper.selectIdByMD5(file);
+                        }catch (Exception e ){
+                            e.printStackTrace();
+                        }
+                        if( fileId != 0){
+                            AppFiles appFiles = new AppFiles();
+                            appFiles.setAppVersionId(version.getId());
+                            appFiles.setFileId(fileId);
+                            if(appFilesMapper.insert(appFiles)==1){
+                                size--;
+                            }
+                        }else {
+                            if (fileMapper.insert(file)==1 ) {
+                                AppFiles appFiles = new AppFiles();
+                                appFiles.setAppVersionId(version.getId());
+                                appFiles.setFileId(file.getId());
+                                appFilesMapper.insert(appFiles);
+                                if(appFilesMapper.insert(appFiles)==1){
+                                    size--;
+                                }
+                            }
+                        }
+                    }
+                }
+            }else {
+                return new SimpleResult<>(-1,"该软件版本已经存在");
+            }
+        }
+        if(size == 0){
+            SimpleResult<Map> result = new SimpleResult<>(0, "插入成功");
+            return result;
+        }
+        return new SimpleResult(-1, "插入失败");
     }
 
     @Override

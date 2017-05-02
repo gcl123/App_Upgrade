@@ -3,11 +3,15 @@ package com.tt.javaserver.web.controller;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.AppFilesService;
 import com.tt.javaserver.web.vo.AppFiles;
+import com.tt.javaserver.web.vo.AppVersion;
+import com.tt.javaserver.web.vo.File;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +35,18 @@ public class AppFilesController extends BaseController {
 
         return appFilesService.insert(appFiles);
 
+    }
+
+    /**
+     * 新增操作指令
+     */
+    @RequestMapping("/addList")
+    @ResponseBody
+    public SimpleResult<Map> insertList(@RequestBody List<File> files, AppVersion appVersion) {
+        System.out.println("add=====list");
+        System.out.println(files.toString());
+
+        return appFilesService.insertList(files,appVersion);
     }
 
 

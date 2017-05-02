@@ -3,6 +3,7 @@ package com.tt.javaserver.web.controller;
 import com.tt.javaserver.web.model.SimpleResult;
 import com.tt.javaserver.web.service.AppService;
 import com.tt.javaserver.web.vo.App;
+import com.tt.javaserver.web.vo.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -75,16 +76,29 @@ public class AppController extends BaseController {
     /**
      * 删除对象
      *
-     * @param app
+     * @param id
+     *
      * @throws Exception
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public SimpleResult<Map> delete(App app) throws Exception {
+    public SimpleResult<Map> delete(int id) throws Exception {
         System.out.println("delete=============");
-        System.out.println(app);
+        System.out.println(id);
 
-        return appService.deleteByStr(app.getAppCode());
+        return appService.deleteByInt(id);
+    }
+
+    //通过关键字分页查询
+    @RequestMapping("/selectPageUseDyc")
+    @ResponseBody //如果返回json格式，需要这个注解，这里用来测试环境
+    public Object selectPageUseDyc(Page<App> page, App app) {
+
+        app.setAppName(" ");
+        page.setParamEntity(app);
+        System.out.println("page==========:" + page + "=======" + app);
+
+        return appService.selectPageUseDyc(page);
     }
 
 

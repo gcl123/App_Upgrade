@@ -67,6 +67,11 @@
 
 
     <!--模糊 查询对象-->
+    <select id="queryList" resultMap="BaseResultMap">
+        select id,name
+        from tl_company_info
+    </select>
+    <!--模糊 查询对象-->
     <select id="selectList" parameterType="com.tt.javaserver.web.vo.Company" resultMap="BaseResultMap">
         select *
         from tl_company_info

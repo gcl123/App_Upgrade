@@ -78,7 +78,11 @@
         <property name="maxUploadSize">
             <value>20971520</value>
         </property>
+        <property name="defaultEncoding">
+            <value>utf-8</value>
+        </property>
     </bean>
+
 
     <bean id="exceptionHandler"
           class="com.tt.javaserver.web.handler.ExceptionHandler">

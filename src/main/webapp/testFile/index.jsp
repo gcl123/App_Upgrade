@@ -24,28 +24,5 @@
     </div>
 </form>
 
-<script type="text/javascript">
-    $(function () {
-        $("#btn").click(function () {
-            $('#ff').form('submit', {
-                url: '${proPath}/company/insert.action',
-                onSubmit: function () {
-                    return true;
-                },
-                success: function (count) {
-                    //可以定义为对应消息框
-                    if (count > 0) {
-                        alert("添加成功！");
-                    } else {
-                        alert("添加失败！");
-                    }
-                }
-            });
-
-        })
-
-    });
-
-</script>
 </body>
 </html>

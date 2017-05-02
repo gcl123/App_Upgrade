@@ -35,6 +35,9 @@ public class FileServiceImpl extends BaseServiceImpl<File> implements FileServic
         return new SimpleResult(-1, "插入失败");
     }
 
+
+
+
     @Override
     public SimpleResult<Map> delete(File file) {
 
@@ -47,6 +50,7 @@ public class FileServiceImpl extends BaseServiceImpl<File> implements FileServic
         }
         return new SimpleResult(-1, "删除失败");
     }
+
 
 
     @Override

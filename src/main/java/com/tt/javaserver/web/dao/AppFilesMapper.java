@@ -15,5 +15,4 @@ public interface AppFilesMapper extends BaseMapper<AppFiles> {
     int selectCountFiles(int id);
 
     int selectCountVersions(int id);
-
 }

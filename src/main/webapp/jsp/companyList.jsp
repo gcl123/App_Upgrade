@@ -13,40 +13,18 @@
     <%
         String path = request.getContextPath();
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-        //String absPath = application.getRealPath(request.getRequestURI());
-    %>
+     %>
     <base href="<%=basePath%>"/>
     <!--js&css-->
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/demo/demo.css">
-    <style type="text/css">
-        #fm {
-            margin: 0;
-            padding: 10px 30px;
-        }
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/themes/icon.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/demo/demo.css"/>
+    <link rel="stylesheet" type="text/css" href="css/mycss.css"/>
 
-        .ftitle {
-            font-size: 14px;
-            font-weight: bold;
-            color: #666;
-            padding: 5px 0;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .fitem {
-            margin-bottom: 5px;
-        }
-
-        .fitem label {
-            display: inline-block;
-            width: 80px;
-        }
-    </style>
     <script type="text/javascript" src="<%=basePath%>js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="<%=basePath%>easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="<%=basePath%>easyui/locale/easyui-lang-zh_CN.js"></script>
+
     <!--http://bbs.csdn.net/topics/390160429-->
     <script type="text/javascript">
         var url;
@@ -77,7 +55,7 @@
                         $('#dg').datagrid('reload');	// reload the user data
                     } else {
                         $.messager.show({
-                            title: 'Error',
+                            title: '提示',
                             msg: result.msg
                         });
                     }
@@ -94,7 +72,7 @@
                                 $('#dg').datagrid('reload');	// reload the user data
                             } else {
                                 $.messager.show({	// show error message
-                                    title: 'msg',
+                                    title: '提示',
                                     msg: result.msg
                                 });
                             }
@@ -156,10 +134,6 @@
             <input name="shortName" required="true"/>
         </div>
 
-        <div class="fitem">
-            <label>公司名称:</label>
-            <input name="name"/>
-        </div>
         <div class="fitem">
             <label>联系电话:</label>
             <input name="mobile"/>

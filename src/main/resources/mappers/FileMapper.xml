@@ -7,6 +7,7 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="size" jdbcType="INTEGER" property="size"/>
+        <result column="md5" jdbcType="VARCHAR" property="md5"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="gzip" jdbcType="INTEGER" property="gzip"/>
         <result column="version" jdbcType="VARCHAR" property="version"/>
@@ -22,7 +23,7 @@
 
 
     <!--新增文件信息-->
-    <insert id="insert" parameterType="com.tt.javaserver.web.vo.File">
+    <insert id="insert" parameterType="com.tt.javaserver.web.vo.File" useGeneratedKeys="true" keyProperty="id">
         insert into tl_file_info (
         id, app_id, name,url, size, type, gzip,
         version, var1, var2,var3, var4, var5,
@@ -73,6 +74,13 @@
         from tl_file_info
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <!--查询-->
+    <select id="selectIdByMD5" parameterType="com.tt.javaserver.web.vo.File" resultMap="java.lang.Integer">
+        select id
+        from tl_file_info
+        where app_id = #{appId}
+        AND md5 = #{md5}
+    </select>
 
     <!--模糊查询对象-->
     <select id="selectList" parameterType="com.tt.javaserver.web.vo.File" resultMap="BaseResultMap">
@@ -110,8 +118,8 @@
     <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.File" resultType="java.lang.Integer">
         select count(1)
         from tl_file_info
-        WHERE id = #{id}
-        AND  app_id = #{appId}
+        WHERE app_id = #{appId}
+        AND md5 = #{md5}
     </select>
 
 

@@ -7,7 +7,6 @@ import com.tt.javaserver.web.vo.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,19 +63,8 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company> implements Comp
     }
 
     @Override
-    public SimpleResult select(Company company) {
-        if (company == null) {
-            return new SimpleResult(-2, "数据为空");
-        }
-        System.out.println("Companyservice=======111");
-        int total = companyMapper.selectCount(company);
-        List<Company> companyList = companyMapper.selectList(company);
-        System.out.println("Companyservice=======222");
-
-        if (total > 0 && companyList != null) {
-            return new SimpleResult(0, "查询成功", total, "companys", companyList);
-        }
-        return new SimpleResult(-1, "查询失败");
+    public Object queryList() {
+       return companyMapper.queryList();
     }
 
     @Override

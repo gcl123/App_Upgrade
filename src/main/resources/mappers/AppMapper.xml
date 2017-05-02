@@ -35,10 +35,11 @@
     </insert>
 
     <!--删除动作指令-->
-    <delete id="deleteByStr" parameterType="java.lang.String">
+    <delete id="deleteByInt" parameterType="java.lang.Integer">
         delete from tl_app_info
-        where app_code = #{appCode};
+        where id = #{id}
     </delete>
+
 
     <!--修改动作指令-->
     <update id="update" parameterType="com.tt.javaserver.web.vo.App">
@@ -99,18 +100,34 @@
     </select>
 
 
-    <!--&lt;!&ndash; 通过主键批量删除&ndash;&gt;-->
-    <!--<delete id="deleteList">-->
-    <!--delete from tl_app_info where tl_app_info.id in-->
-    <!--<foreach close=")" collection="array" item="pks" open="(" separator=",">-->
-    <!--#{pks}-->
-    <!--</foreach>-->
-    <!--</delete>-->
 
     <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.App" resultType="java.lang.Integer">
         select count(1)
         from tl_app_info
         WHERE app_code = #{appCode};
+    </select>
+
+    <select id="selectRecordById" parameterType="java.lang.Intege" resultType="java.lang.Integer">
+        select count(1)
+        from tl_app_info
+        WHERE id = #{id};
+    </select>
+
+    <!-- 通过多条件分页查询，返回数据集 -->
+    <select id="selectPageListUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultMap="BaseResultMap">
+        select * from tl_app_info
+        <!--<where>-->
+        <!--<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>-->
+        <!--</where>-->
+        limit #{start},#{rows}
+    </select>
+
+    <!-- 通过多条件分页查询，返回总记录数 -->
+    <select id="selectPageCountUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultType="java.lang.Integer">
+        select count(1) from tl_app_info
+        <!--<where>-->
+        <!--<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>-->
+        <!--</where>-->
     </select>
 
 </mapper>

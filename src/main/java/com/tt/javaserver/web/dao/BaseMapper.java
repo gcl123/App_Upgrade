@@ -38,12 +38,6 @@ public interface BaseMapper<T> {
     //    查询单个对象
     T select(T entity);
 
-    //    通过主键（数组）批量删除数据
-    int deleteList(String[] pks);
-
-    //    查询ID
-    int selectID(T entity);
-
     List<T> selectPageListUseDyc(Page<T> page);
 
     Integer selectPageCountUseDyc(Page<T> page);
