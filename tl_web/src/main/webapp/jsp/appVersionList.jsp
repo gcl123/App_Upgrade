@@ -1,0 +1,327 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>版本列表</title>
+    <%
+        String path = request.getContextPath();
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    %>
+    <base href="<%=basePath%>"/>
+    <!--js&css-->
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/themes/icon.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/demo/demo.css"/>
+    <link rel="stylesheet" type="text/css" href="css/mycss.css"/>
+
+    <script type="text/javascript" src="<%=basePath%>js/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>easyui/locale/easyui-lang-zh_CN.js"></script>
+
+    <!--http://bbs.csdn.net/topics/390160429-->
+    <script type="text/javascript">
+        var url;
+/*
+        function initCombo() {
+            $('#cmbStatus').combobox({
+                url: '',
+                valueField: 'id',
+                textField: 'text',
+                editable:false,
+                onLoadSuccess: function(data){
+                    orgCount = data.length;
+                },
+                onShowPanel: function() {
+                    // 动态调整高度
+                    if (orgCount > 13) {
+                        $(this).combobox('panel').height(285);
+                    }
+                    else{
+                        $(this).combobox('panel').height(100);
+                    }
+
+                }
+            });
+        }*/
+
+
+        function addVersion() {
+            $('#dlg').dialog('open').dialog('setTitle', '新增');
+            $('#fm').form('clear');
+            url = 'version/add.action';
+        }
+        function editVersion() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                $('#dlg').dialog('open').dialog('setTitle', 'Edit company');
+                $('#fm').form('load', row);
+                url = '<%=basePath%>version/update.action?id=' + row.id;
+            }
+        }
+
+        function saveVersion() {
+            $('#fm').form('submit', {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if( parseInt(result.code) == 0){
+                        $('#dlg').dialog('close');		// close the dialog
+                        $('#dg').datagrid('reload');
+                    }
+                    $.messager.show({
+                        title: '提示',
+                        msg: result.msg
+                    });
+                }
+            });
+        }
+        function removeVersion() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                $.messager.confirm('请确认', '确定要删除吗?', function (r) {
+                    if (r) {
+                        $.post("version/delete.action", {id: row.id}, function (result) {
+                            if( parseInt(result.code) == 0){
+                                $('#dg').datagrid('reload');
+                            }
+                            $.messager.show({
+                                title: '提示',
+                                msg: result.msg
+                            });
+                        }, 'json');
+                    }
+                });
+            }
+        }
+
+        function testRun(){
+            $.messager.show({
+                title: '提示',
+                msg: "设置成功！"
+            });
+        }
+
+
+
+        function editScript() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                $('#dlgScript').dialog('open').dialog('setTitle', '脚本内容');
+                $('#fm').form('load', row);
+                url = '<%=basePath%>version/editScript.action?versionId=' + row.id;
+            }
+        }
+
+        function saveScript() {
+            $('#fmScript').form('submit', {
+                url:url ,
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+//                    if( parseInt(result.code) == 0){
+//                        $('#dlg').dialog('close');		// close the dialog
+//                        $('#dg').datagrid('reload');
+//                    }
+                    $.messager.show({
+                        title: '提示',
+                        msg: result.msg
+                    });
+                }
+            });
+        }
+
+        function editStatus() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                $("#cmbStatus").combobox({panelHeight:"50"});
+                $('#dlgStatus').dialog('open').dialog('setTitle', '更改状态');
+
+                <!--$(#cmbStatus).combobox('panel').height(100);-->
+                $('#fm').form('load', row);
+                url = 'version/editStatus.action?id=' + row.id;
+            }
+        }
+
+
+        function saveStatus() {
+            $('#fmStatus').form('submit', {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    $.messager.show({
+                        title: '提示',
+                        msg: result.msg
+                    });
+                }
+            });
+        }
+
+
+        function setMinVersion() {
+            var row = $('#dg').datagrid('getSelected');
+            if(row){
+                $.post("version/setMinVersion.action", {limitVersion: row.version}, function (result) {
+                    $.messager.show({	// show error message
+                        title: '提示',
+                        msg: result.msg
+                    });
+                }, 'json');
+            }
+        }
+
+        function fileUpload() {
+//            var row = $('#dg').datagrid('getSelected');
+//            if(row){
+                window.location.href="jsp/upload.jsp";
+//            }else {
+//                alert("请选择软件");
+//            }
+        }
+
+    </script>
+
+
+</head>
+<!--div style=" margin:2px; text-align:center; font-size:20px;">版本信息</div>
+<div>
+    　
+</div-->
+<!--%@ include file="=basePath%>jsp/pnlAppInfo.jsp"%-->
+
+<div id="pnlAppInfo" class="easyui-panel" style="width:1100px;height:54px;padding:4px;"
+     data-options="title:'App信息'">
+    <b>AppCode：${sessionScope.curApp.appCode}&nbsp;&nbsp;&nbsp;&nbsp;
+    App名称：${sessionScope.curApp.appName}&nbsp;&nbsp;&nbsp;&nbsp;
+    所属公司：${sessionScope.curApp.companyName}&nbsp;&nbsp;&nbsp;&nbsp;
+    最新版本：${sessionScope.curApp.latestVersion}</b>
+</div>
+<!--div>
+    <input class="easyui-textbox" label="Description:" labelPosition="top" multiline="true" value="This TextBox will allow the user to enter multiple lines of text." style="width:100%;height:120px">
+
+</div-->
+<!--http://blog.csdn.net/shiyong1949/article/details/52815378-->
+<table id="dg" title="版本列表" class="easyui-datagrid" style="width:1100px;height:400px"
+       url='<%=basePath%>version/selectPageUseDyc.action'
+       toolbar="#toolbar" pagination="true"
+       rownumbers="true" fitColumns="true" singleSelect="true">
+    <thead>
+    <tr>
+        <th field="id" width="80">记录ID</th>
+        <th field="version" width="100">软件版本</th>
+        <th field="updateDescription" width="500">更新说明</th>
+        <th field="setupScript" width="120">安装脚本</th>
+        <th field="statusInfo" width="80">状态</th>　
+        <th field="remark" width="300">备注</th>
+    </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addVersion()">新增</a>
+    <a class="easyui-linkbutton" iconCls="icon-selected" plain="true" onclick="fileUpload()">上传文件</a>
+    <a class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editVersion()">编辑</a>
+    <a class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeVersion()">删除</a>
+    <a class="easyui-linkbutton" iconCls="icon-selected" plain="true" onclick="editScript()">编辑脚本</a>
+    <a class="easyui-linkbutton" iconCls="icon-selected" plain="true" onclick="testRun()">测试运行</a>
+    <a class="easyui-linkbutton" iconCls="icon-selected" plain="true" onclick="editStatus()">更改状态</a>　
+    <a class="easyui-linkbutton" iconCls="icon-selected" plain="true" onclick="setMinVersion()">最小可用版本设置</a>　
+</div>
+
+<!--div>%=Mm.GetProperties("dataUrl")%></div>
+
+<div id="win" class="easyui-window" title="My Window" style="width:300px;height:100px;padding:5px;">
+  test
+</div-->
+<%--添加版本--%>
+<div id="dlg" class="easyui-dialog" style="width:400px;height:420px;padding:0px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">版本信息</div>
+    <form id="fm" method="post" novalidate>
+        　
+        <div>
+            <input type="hidden" name="appId" />
+        </div>
+        <div>
+            <input type="hidden" name="status"/>
+        </div>
+        <div class="fitem">
+            <label>软件版本:</label>
+            <input name="version" class="easyui-validatebox" required="true"/>
+        </div>
+        <div class="fitem">
+            <!--label>更新说明:</label-->
+            <!--input  name="updateDescription" type="text" class="easyui-textbox" data-options="multiline:true" style="height:80px;width:200px;"/-->
+            <!--textarea name="updateDescription" class="easyui-textbox" style="height:20px;width:200px;"  rows="2"/-->
+            <input class="easyui-textbox" label="更新说明:" name="updateDescription"
+                   labelPosition="top" multiline="true"  style="width:90%;height:120px">
+        </div>
+
+        <div class="fitem">
+            <label>备注:</label>
+            <input name="remark"/>
+        </div>
+
+    </form>
+    <div id="dlg-buttons">
+        <a class="easyui-linkbutton" iconCls="icon-ok" onclick="saveVersion()">保存</a>
+        <a class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+    </div>
+</div>
+
+
+
+    <%--<div id="dlg-buttons">--%>
+        <%--<a class="easyui-linkbutton" iconCls="icon-ok" onclick="saveStatus()">保存</a>--%>
+        <%--<a class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>--%>
+    <%--</div>--%>
+<%--</div>--%>
+
+<!--浏览编辑脚本-->
+<div id="dlgScript" class="easyui-dialog" style="width:1000px;height:490px;padding:0px 0px"
+     closed="true" buttons="#dlgScript-buttons">
+    <!--div class="ftitle">脚本内容</div-->
+    <form id="fmScript" method="post" novalidate>
+        <!--textarea name="txtScript" rows="100" cols="150" content="12345678" /-->
+
+        <!--input type="text" class="easyui-textbox" data-options="multiline:true"/-->
+        <input class="easyui-textbox" multiline="true"  style="width:100%;height:420px;">
+    </form>
+    <div id="dlgScript-buttons">
+        <a class="easyui-linkbutton" iconCls="icon-ok" onclick="saveScript()">确定</a>
+        <a class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgScript').dialog('close')">取消</a>
+    </div>
+</div>
+
+<!--编辑状态-->
+<div id="dlgStatus" class="easyui-dialog" style="width:220px;height:120px;padding:10px 20px"
+     closed="true" buttons="#dlgStatus-buttons">
+    <!--div class="ftitle">脚本内容</div-->
+    <form id="fmStatus" method="post" novalidate>
+        <!--textarea name="txtScript" rows="100" cols="150" content="12345678" /-->
+        <select  name="status" id="cmbStatus" class="easyui-combobox" style="width:150px;">
+            <option value="0" >不可用</option>
+            <option value="1" selected>可用</option>
+            <option value="9" >测试中</option>
+        </select>
+
+    </form>
+    <div id="dlgStatus-buttons">
+        <a class="easyui-linkbutton" iconCls="icon-ok" onclick="saveStatus()">确定</a>
+        <a class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgStatus').dialog('close')">取消</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>

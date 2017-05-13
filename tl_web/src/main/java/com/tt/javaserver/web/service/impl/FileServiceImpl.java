@@ -1,0 +1,125 @@
+package com.tt.javaserver.web.service.impl;
+
+import com.tt.javaserver.web.model.SimpleResult;
+import com.tt.javaserver.web.service.FileService;
+import com.tt.javaserver.web.vo.File;
+import com.tt.javaserver.web.vo.Page;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by GCL on 17/4/15.
+ */
+@Service
+public class FileServiceImpl extends BaseServiceImpl<File> implements FileService {
+
+    @Override
+    public int selectIdByMd5(File file) {
+         try {
+             return fileMapper.selectIdByMD5(file);
+         }catch (Exception e){
+             return -1;
+         }
+    }
+
+
+    @Override
+    public int insert(File file) {
+        addCreateTime(file);
+        addUpdateTime(file);
+
+        int r = 0;
+        try {
+            if(fileMapper.selectRecord(file)==0){
+                return fileMapper.insert(file);
+            }
+            return -2;
+        }catch (Exception e){
+            e.printStackTrace();
+            return r;
+        }
+    }
+
+    @Override
+    public int delete(File file) {
+        int r = 0;
+        try {
+            return fileMapper.delete(file);
+        }catch (Exception e){
+            return r;
+        }
+
+    }
+
+
+
+
+    @Override
+    public int update(File file) {
+        addUpdateTime(file);
+
+        int r = 0;
+        try {
+            return fileMapper.update(file);
+        }catch (Exception e){
+            return r;
+        }
+
+    }
+
+    @Override
+    public SimpleResult select(File file) {
+
+        if (file == null) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        int total = fileMapper.selectCount(file);
+        List<File> fileList = fileMapper.selectList(file);
+
+        if (total > 0 && fileList != null) {
+            return new SimpleResult(0, "查询成功", total, "files", fileList);
+        }
+        return new SimpleResult(-1, "查询失败");
+    }
+
+
+    /**
+     * 动态分页查询
+     *
+     * @param page
+     * @return
+     */
+    public Map selectPageUseDyc(Page<File> page) {
+        page.setList(fileMapper.selectPageListUseDyc(page));
+        page.setTotalRecord(fileMapper.selectPageCountUseDyc(page));
+
+        System.out.println("page========" + page.getPageMap());
+
+        return page.getPageMap();
+    }
+
+
+    /**
+     * 设置更新时间
+     *
+     * @param file
+     */
+    public void addUpdateTime(File file) {
+        file.setUpdateTime(getCurrentTime());
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param file
+     */
+    public void addCreateTime(File file) {
+        file.setCreateTime(getCurrentTime());
+    }
+
+
+
+
+}

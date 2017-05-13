@@ -1,0 +1,304 @@
+package com.tt.javaserver.web.controller;
+
+import com.tt.javaserver.web.model.SimpleResult;
+import com.tt.javaserver.web.service.AppFilesService;
+import com.tt.javaserver.web.service.AppService;
+import com.tt.javaserver.web.service.AppVersionService;
+import com.tt.javaserver.web.service.FileService;
+import com.tt.javaserver.web.vo.App;
+import com.tt.javaserver.web.vo.AppFiles;
+import com.tt.javaserver.web.vo.AppVersion;
+import com.tt.javaserver.web.vo.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by GCL on 17/4/20.
+ */
+@Controller
+@RequestMapping("/appFiles")
+public class AppFilesController extends BaseController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppFilesController.class);
+
+    @Resource
+    private AppFilesService appFilesService;
+    @Resource
+    private AppService appService;
+
+    @Resource
+    private AppVersionService appVersionService;
+
+    @Resource
+    private FileService fileService;
+
+
+
+
+
+
+    @RequestMapping("/upload")
+    @ResponseBody
+    public SimpleResult<Map> fileUpload(MultipartFile file, HttpServletRequest request) throws IOException {
+
+        String path = request.getSession().getServletContext().getRealPath("upload");
+//        String path = "/Users/apple/IDEA/upload";
+        String fileName = file.getOriginalFilename();
+        java.io.File dir = new java.io.File(path,fileName);
+        System.out.println("path====="+path);
+        System.out.println("filename====="+fileName);
+
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        //MultipartFile自带的解析方法
+        file.transferTo(dir);
+
+        File appfile = new File();
+        appfile.setUrl(path+fileName);
+        LOGGER.info("appfile===upload"+appfile);
+
+        return new SimpleResult<>(0,"ok");
+
+
+    }
+
+
+    /**
+     * 添加软件 版本 文件
+     * @param files
+     * @param version
+     * @param app
+     * @return
+     */
+    public SimpleResult<Map> addList( List<File> files, AppVersion version, App app) {
+        LOGGER.info("add=====list"+files);
+        LOGGER.info("add=====list"+ version);
+        LOGGER.info("add=====list"+app);
+
+        if (files == null || version == null || app ==null) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        int r = -1;
+        if(isFirstUpload(app)){
+            //第一次上传软件
+            r = newAppUpload(files, version,app);
+        }else{
+            //非第一次上传
+            r = exitAppUpload(files, version,app);
+        }
+        if(r == 0){
+            return  new SimpleResult<>(0, "插入成功");
+        }else if(r == -1){
+            return new SimpleResult(-1, "app插入失败");
+        }else if(r == -2){
+            return new SimpleResult(-1, "软件版本插入失败");
+        }
+        return new SimpleResult(-1, "插入失败");
+    }
+
+
+    /**
+     * 第一次上传软件,存储软件对应的每个文件
+     * @param files
+     * @param version
+     * @param app
+     * @return
+     */
+    private int newAppUpload(List<File> files, AppVersion version,App app) {
+        int size = files.size();
+        if(appService.insert(app) > 0){
+            LOGGER.info("首次插入软件"+app);
+            version.setAppId(app.getId());
+            if( appVersionService.insert(version) > 0 ){
+                LOGGER.info("首次插入该软件版本"+version);
+                Iterator it = files.iterator();
+                while(it.hasNext()){
+                    File file = (File) it.next();
+                    file.setAppId(app.getId());
+                    if(fileService.insert(file) > 0){
+                        size = saveAppFiles(version, size, file);
+                    }else {
+                        LOGGER.info("文件插入失败"+file);
+                    }
+                }
+                return size;
+            }else {
+                return -2;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 上传已有软件的新版本,存储软件的每个文件
+     * @param files
+     * @param version
+     * @param app
+     * @return
+     */
+    private int exitAppUpload(List<File> files, AppVersion version,App app) {
+        int size = files.size();
+        version.setAppId(app.getId());
+        if(appVersionService.insert(version) > 0 ){
+            LOGGER.info("首次插入该软件版本"+version);
+            Iterator it = files.iterator();
+            while(it.hasNext()){
+                File file = (File) it.next();
+                file.setAppId(app.getId());
+                try {
+                    int id = fileService.selectIdByMd5(file);
+                    file.setAppId(app.getId());
+                    if(id != 0){
+                        file.setId(id);
+                        size = saveAppFiles(version, size, file);
+                    }else {
+                        if(fileService.insert(file) > 0){
+                            size = saveAppFiles(version, size, file);
+                        }else {
+                            LOGGER.info("文件插入失败"+file);
+                        }
+                    }
+                }catch (Exception e ){
+                    LOGGER.info("文件插入失败");
+                }
+            }
+            return size;
+        }
+        return -2;
+    }
+
+    /**
+     * 是否是第一次上场软件
+     * @param app
+     * @return
+     */
+    private boolean isFirstUpload(App app) {
+        if (appService.select(app.getId()) == null){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 保存文件版本对应的文件
+     * @param version
+     * @param size
+     * @param file
+     * @return
+     */
+    private int saveAppFiles(AppVersion version, int size, File file) {
+        AppFiles appFiles = new AppFiles();
+        appFiles.setAppVersionId(version.getId());
+        appFiles.setFileId(file.getId());
+        if(appFilesService.insert(appFiles) > 0){
+            size--;
+        }else {
+            LOGGER.info("文件版本{}对应文件{}插入失败", version.getVersion(),file.getId());
+        }
+        return size;
+    }
+
+
+
+
+
+
+
+
+
+
+    @RequestMapping("/add")
+    @ResponseBody
+    public SimpleResult<Map> insert(AppFiles appFiles) {
+        LOGGER.info("====add===="+appFiles);
+
+        if (appFiles == null) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        if (appFilesService.insert(appFiles) > 0) {
+            SimpleResult<Map> result = new SimpleResult<>(0, "插入成功");
+            return result;
+        }
+        return new SimpleResult(-1, "插入失败,指令已存在");
+    }
+
+//    /**
+//     * 查询对象
+//     *
+//     * @param appFiles
+//     * @return
+//     */
+//    @RequestMapping("/queryVersion")
+//    @ResponseBody
+//    public SimpleResult<Map> queryVersion(AppFiles appFiles) {
+//        LOGGER.info("=============");
+//        LOGGER.info(appFiles.toString());
+//
+//        return appFilesService.selectVersionsByFileId(appFiles.getFileId());
+//    }
+//
+//    @RequestMapping("/queryFiles")
+//    @ResponseBody
+//    public SimpleResult<Map> queryFiles(AppFiles appFiles) {
+//        LOGGER.info("=============");
+//        LOGGER.info(appFiles.toString());
+//
+//        return appFilesService.selectFilesByVersionId(appFiles.getAppVersionId());
+//    }
+
+    /**
+     * 更新appFiles指令
+     *
+     * @param appFiles
+     * @return
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public SimpleResult<Map> update(AppFiles appFiles) {
+        LOGGER.info("update============="+appFiles);
+
+        if (appFiles == null) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        if (appFilesService.update(appFiles) > 0) {
+            SimpleResult<Map> result = new SimpleResult<>(0, "更新成功");
+            return result;
+        }
+        return new SimpleResult(-1, "更新失败");
+    }
+
+    /**
+     * 删除
+     *
+     * @param appFiles
+     * @throws Exception
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public SimpleResult<Map> delete(AppFiles appFiles) {
+        LOGGER.info("delete============="+appFiles);
+        if (appFiles == null) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        if (appFilesService.deleteByInt(appFiles.getAppVersionId()) > 0 ) {
+            SimpleResult<Map> result = new SimpleResult<>(0, "删除成功");
+            return result;
+        }
+        return new SimpleResult(-1, "删除失败");
+    }
+
+
+
+}

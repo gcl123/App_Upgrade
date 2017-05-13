@@ -1,0 +1,251 @@
+package com.tt.javaserver.web.controller;
+
+import com.tt.javaserver.web.model.SimpleResult;
+import com.tt.javaserver.web.service.AppFilesService;
+import com.tt.javaserver.web.service.AppService;
+import com.tt.javaserver.web.service.AppVersionService;
+import com.tt.javaserver.web.service.FileService;
+import com.tt.javaserver.web.vo.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+
+/**
+ * Created by GCL on 17/4/20.
+ */
+@Controller
+@RequestMapping("/version")
+public class AppVersionController extends BaseController {
+
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppVersionController.class);
+
+
+    @Resource
+    private AppService appService;
+
+    @Resource
+    private AppVersionService appVersionService;
+
+    @Resource
+    private  AppFilesService appFilesService;
+
+    @Resource
+    private FileService fileService ;
+
+    /**
+     * 新增操作指令
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public SimpleResult<Map> insert(AppVersion appVersion) {
+        LOGGER.info("====add===="+appVersion);
+
+        if (appVersion == null) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        if (appVersionService.insert(appVersion)>0) {
+            LOGGER.info("插入success===="+appVersion.getId());
+            SimpleResult<Map> result = new SimpleResult<>(0, "插入版本成功");
+            Map<String, Object> data = new HashMap<>();
+            data.put("id", appVersion.getId());
+            result.setData(data);
+            return result;
+        }else {
+            return new SimpleResult(-1, "删除失败");
+        }
+
+    }
+
+
+    @RequestMapping("/query")
+    @ResponseBody
+    public SimpleResult<Map> query(AppVersion appVersion) {
+        LOGGER.info("query===="+appVersion);
+
+        if (appVersion == null) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        int total = appVersionService.selectTotal(appVersion);
+        List<AppVersion> appVersionList = appVersionService.selectList(appVersion);
+        if (total!=0 && appVersionList!= null) {
+            SimpleResult<Map> result = new SimpleResult<>(0, "查询成功");
+            Map<String, Object> data = new HashMap<>();
+            data.put("total", total);
+            data.put("appVersions",appVersionList);
+            result.setData(data);
+            return result;
+        }else {
+            return new SimpleResult(-1, "删除失败");
+        }
+
+    }
+
+
+
+    /**
+     * 更新appVersion指令
+     *
+     * @param appVersion
+     * @return
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public SimpleResult<Map> update(AppVersion appVersion) {
+        LOGGER.info("update============="+appVersion);
+        if (appVersion == null) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        if (appVersionService.update(appVersion)>0) {
+            SimpleResult<Map> result = new SimpleResult<>(0, "更新成功");
+            return result;
+        }
+        return new SimpleResult(-1, "更新失败");
+    }
+
+    /**
+     * 删除
+     *
+     * @param
+     * @throws Exception
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public SimpleResult<Map> delete(int  id) {
+        LOGGER.info("delete============"+id);
+
+        if (id == 0) {
+            return new SimpleResult(-2, "数据为空");
+        }
+        if(appVersionService.deleteByInt(id)>0){
+            LOGGER.info("删除success");
+            SimpleResult<Map> result = new SimpleResult<>(0, "删除成功");
+            return result;
+        }else {
+            return new SimpleResult(-1, "删除失败");
+        }
+    }
+
+    /**
+     * 分页查询 将版本状态存储到session中
+     * @param page
+     * @param request
+     * @return
+     */
+    @RequestMapping("/selectPageUseDyc")
+    @ResponseBody
+    public Object selectPageUseDyc(Page<AppVersion> page, HttpServletRequest request) {
+
+        LOGGER.info("appversion--selectPageUseDyc======page"+page);
+        appVersionService.setStatus();
+        return appVersionService.selectPageUseDyc(page);
+    }
+
+    /**
+     * 根据id查询脚本
+     * @param id
+     * @return
+     */
+    @RequestMapping("/editScript")
+    @ResponseBody
+    public SimpleResult<Map> editScript(int id){
+
+        LOGGER.info("editScript========"+id);
+        if(id == 0 ){
+            return new SimpleResult(-2, "数据为空");
+        }
+        AppVersion appVersion = appVersionService.select(id);
+        if(appVersion != null){
+            SimpleResult<Map> result = new SimpleResult<>(0, "查询成功");
+            Map<String, Object> data = new HashMap<>();
+            data.put("appVersion", appVersion);
+            result.setData(data);
+            return result;
+        }else {
+            return new SimpleResult<>(-1,"此版本不存在");
+        }
+    }
+
+    /**
+     *
+     * @param appVersion
+     * @return
+     */
+    @RequestMapping("/saveScript")
+    @ResponseBody
+    public SimpleResult<Map> saveScript(AppVersion appVersion){
+
+        LOGGER.info("saveScript========"+appVersion);
+        return update(appVersion);
+    }
+
+
+
+    /**
+     * 更改版本状态
+     * 0-不可用
+     * 1-可用
+     * 9-测试中
+     * @param appVersion
+     * @return
+     */
+    @RequestMapping("/editStatus")
+    @ResponseBody //如果返回json格式
+    public SimpleResult<Map> editStatus(AppVersion appVersion){
+
+        LOGGER.info("editStatus========"+appVersion);
+       return update(appVersion);
+    }
+
+
+    /**
+     * app版本升级
+     * @param id  app 记录id
+     * @param curVersion  当前使用版本
+     * @return
+     */
+    @RequestMapping("/versionUpgrade")
+    @ResponseBody
+    public SimpleResult<Map> versionUpgrade(int id,String curVersion){
+
+        LOGGER.info("versionUpgrade========"+id);
+        LOGGER.info("versionUpgrade========"+curVersion);
+        if(id == 0 && curVersion==null){
+            return new SimpleResult(-2, "数据为空");
+        }
+        App app = appService.select(id);
+        if(app != null &&  curVersion.compareTo(app.getLatestVersion()) < 0){
+            AppVersion appVersion = appVersionService.selectVersion(app.getId(),app.getLatestVersion());
+            if(appVersion != null){
+                List<AppFiles> appFilesList = appFilesService.selectFilesByVersionId(appVersion.getId());
+                if (appFilesList!= null){
+                    List<File> fileList = new LinkedList<>();
+                    Iterator it = appFilesList.iterator();
+                    while (it.hasNext()){
+                        AppFiles appFiles = (AppFiles) it.next();
+                        int fileId = appFiles.getFileId();
+                        File file = fileService.select(fileId);
+                        fileList.add(file);
+                    }
+                    SimpleResult<Map> result = new SimpleResult<>(0, "查询成功");
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("appVersion", appVersion);
+                    data.put("versionFileList", fileList);
+                    result.setData(data);
+                    return result;
+                }
+            }else {
+                return new SimpleResult<>(-1,"此版本不存在");
+            }
+        }
+        return new SimpleResult<>(-1,"此软件不存在");
+    }
+
+
+}

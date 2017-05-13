@@ -1,0 +1,3 @@
+#log_config
+logginLevel=$logginLevel
+logginRoot=$logginRoot

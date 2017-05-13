@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tt.javaserver.web.dao.AppMapper">
+    <resultMap id="BaseResultMap" type="com.tt.javaserver.web.vo.App">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="app_code" jdbcType="VARCHAR" property="appCode"/>
+        <result column="app_name" jdbcType="VARCHAR" property="appName"/>
+        <result column="latest_version" jdbcType="VARCHAR" property="latestVersion"/>
+        <result column="limit_version" jdbcType="VARCHAR" property="limitVersion"/>
+        <result column="company_id" jdbcType="INTEGER" property="companyId"/>
+        <result column="var1" jdbcType="VARCHAR" property="var1"/>
+        <result column="var2" jdbcType="VARCHAR" property="var2"/>
+        <result column="var3" jdbcType="VARCHAR" property="var3"/>
+        <result column="var4" jdbcType="VARCHAR" property="var4"/>
+        <result column="var5" jdbcType="VARCHAR" property="var5"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+
+    <!--插入动作指令  -->
+    <insert id="insert" parameterType="com.tt.javaserver.web.vo.App" keyProperty="id" useGeneratedKeys="true">
+        insert into tl_app_info (id ,app_code, app_name, latest_version,
+        limit_version, description, company_id,
+        var1, var2, var3, var4, var5, update_time, create_time, remark)
+        values (
+        #{id,jdbcType=INTEGER}, #{appCode,jdbcType=VARCHAR}, #{appName,jdbcType=VARCHAR},
+        #{latestVersion,jdbcType=VARCHAR}, #{limitVersion,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR},
+        #{companyId,jdbcType=INTEGER},
+        #{var1,jdbcType=VARCHAR}, #{var2,jdbcType=VARCHAR}, #{var3,jdbcType=VARCHAR}, #{var4,jdbcType=VARCHAR},
+        #{var5,jdbcType=VARCHAR}, #{updateTime,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--删除动作指令-->
+    <delete id="deleteByInt" parameterType="java.lang.Integer">
+        delete from tl_app_info
+        where id = #{id}
+    </delete>
+
+    <!--修改动作指令-->
+    <update id="update" parameterType="com.tt.javaserver.web.vo.App">
+        update tl_app_info
+        set
+        <if test="appCode != null ">app_code = #{appCode,jdbcType=VARCHAR},</if>
+        <if test="appName != null ">app_name = #{appName,jdbcType=VARCHAR},</if>
+        <if test="latestVersion != null ">latest_version = #{latestVersion,jdbcType=VARCHAR},</if>
+        <if test="limitVersion != null ">limit_version = #{limitVersion,jdbcType=VARCHAR},</if>
+        <if test="companyId != null ">company_id = #{companyId,jdbcType=INTEGER},</if>
+        var1 = #{var1,jdbcType=VARCHAR},
+        var2 = #{var2,jdbcType=VARCHAR},
+        var3 = #{var3,jdbcType=VARCHAR},
+        var4 = #{var4,jdbcType=VARCHAR},
+        var5 = #{var5,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=INTEGER},
+        remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id}
+    </update>
+ <!--&lt;!&ndash;修改动作指令&ndash;&gt;-->
+    <!--<update id="update" parameterType="com.tt.javaserver.web.vo.App">-->
+        <!--update tl_app_info-->
+        <!--set-->
+        <!--<if test="appCode != null ">app_code = #{appCode,jdbcType=VARCHAR}</if>-->
+        <!--<if test="appCode != null ">app_code = #{appCode,jdbcType=VARCHAR}</if>-->
+        <!--app_name = #{appName,jdbcType=VARCHAR},-->
+        <!--latest_version = #{latestVersion,jdbcType=VARCHAR},-->
+        <!--limit_version = #{limitVersion,jdbcType=VARCHAR},-->
+        <!--company_id = #{companyId,jdbcType=INTEGER},-->
+        <!--var1 = #{var1,jdbcType=VARCHAR},-->
+        <!--var2 = #{var2,jdbcType=VARCHAR},-->
+        <!--var3 = #{var3,jdbcType=VARCHAR},-->
+        <!--var4 = #{var4,jdbcType=VARCHAR},-->
+        <!--var5 = #{var5,jdbcType=VARCHAR},-->
+        <!--<if test="updateTime != null">-->
+            <!--update_time = #{updateTime,jdbcType=INTEGER},-->
+        <!--</if>-->
+        <!--create_time = #{createTime,jdbcType=INTEGER},-->
+        <!--remark = #{remark,jdbcType=VARCHAR}-->
+        <!--where id = #{id}-->
+    <!--</update>-->
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT id,app_code,app_name
+        FROM tl_app_info
+    </select>
+
+    <select id="selectByCompanyId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT *
+        FROM tl_app_info
+        WHERE company_id = #{companyId}
+    </select>
+
+    <!--模糊 查询对象-->
+    <select id="selectList" parameterType="com.tt.javaserver.web.vo.App" resultMap="BaseResultMap">
+        select *
+        from tl_app_info
+        <where>
+            <if test="appCode != null">
+                <bind name="appCode" value="'%' + appCode + '%'"/>
+                and app_code like #{appCode}
+            </if>
+            <if test="appName != null">
+                <bind name="appName" value="'%' + appName + '%'"/>
+                and app_name like #{appName}
+            </if>
+        </where>
+    </select>
+
+    <!--查询对象个数-->
+    <select id="selectCount" parameterType="com.tt.javaserver.web.vo.App" resultType="java.lang.Integer">
+        select count(1)
+        from tl_app_info
+        <where>
+            <if test="appCode != null">
+                <bind name="appCode" value="'%' + appCode + '%'"/>
+                and app_code like #{appCode}
+            </if>
+            <if test="appName != null">
+                <bind name="appName" value="'%' + appName + '%'"/>
+                and app_name like #{appName}
+            </if>
+        </where>
+    </select>
+
+    <!--查询对象id-->
+    <select id="selectById" parameterType="com.tt.javaserver.web.vo.App" resultMap="BaseResultMap">
+        select *
+        from tl_app_info
+        WHERE id = #{id};
+    </select>
+
+
+    <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.App" resultType="java.lang.Integer">
+        select count(1)
+        from tl_app_info
+        WHERE app_code = #{appCode}
+        AND company_id = #{companyId};
+    </select>
+
+    <select id="selectRecordById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(1)
+        from tl_app_info
+        WHERE id = #{id};
+    </select>
+
+    <!-- 通过多条件分页查询，返回数据集 -->
+    <select id="selectPageListUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultMap="BaseResultMap">
+        select * from tl_app_info
+        <!--<where>-->
+        <!--<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>-->
+        <!--</where>-->
+        limit #{start},#{rows}
+    </select>
+
+    <!-- 通过多条件分页查询，返回总记录数 -->
+    <select id="selectPageCountUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultType="java.lang.Integer">
+        select count(1) from tl_app_info
+        <!--<where>-->
+        <!--<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>-->
+        <!--</where>-->
+    </select>
+
+</mapper>

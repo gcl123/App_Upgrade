@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tt.javaserver.web.dao.AppVersionMapper">
+    <resultMap id="BaseResultMap" type="com.tt.javaserver.web.vo.AppVersion">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="app_id" jdbcType="INTEGER" property="appId"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="setup_script" jdbcType="VARCHAR" property="setupScript"/>
+        <result column="update_description" jdbcType="VARCHAR" property="updateDescription"/>
+        <result column="var1" jdbcType="VARCHAR" property="var1"/>
+        <result column="var2" jdbcType="VARCHAR" property="var2"/>
+        <result column="var3" jdbcType="VARCHAR" property="var3"/>
+        <result column="var4" jdbcType="VARCHAR" property="var4"/>
+        <result column="var5" jdbcType="VARCHAR" property="var5"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <!--新增app版本信息-->
+    <insert id="insert" parameterType="com.tt.javaserver.web.vo.AppVersion" keyProperty="id" useGeneratedKeys="true">
+        insert into tl_app_version
+        (
+        app_id,
+         version,
+         status,
+        var1,
+        var2,
+        var3,
+         var4,
+          var5,
+        update_time,
+        create_time,
+        remark,
+        update_description,
+        setup_script
+        )
+        values
+        (
+         #{appId,jdbcType=INTEGER},
+        #{version,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER},
+        #{var1,jdbcType=VARCHAR},
+         #{var2,jdbcType=VARCHAR},
+        #{var3,jdbcType=VARCHAR},
+         #{var4,jdbcType=VARCHAR},
+          #{var5,jdbcType=VARCHAR},
+          #{updateTime,jdbcType=INTEGER},
+        #{createTime,jdbcType=INTEGER},
+         #{remark,jdbcType=VARCHAR},
+          #{updateDescription,jdbcType=LONGVARCHAR},
+        #{setupScript,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+
+    <!--删除app版本信息-->
+    <delete id="deleteByInt" parameterType="java.lang.Integer">
+        delete from tl_app_version
+        where id = #{id}
+    </delete>
+
+    <!--更新app版本信息-->
+    <update id="update" parameterType="com.tt.javaserver.web.vo.AppVersion">
+        update tl_app_version
+        set
+        <if test="status != null" >
+            status = #{status,jdbcType=INTEGER},
+        </if>
+        var1 = #{var1,jdbcType=VARCHAR},
+        var2 = #{var2,jdbcType=VARCHAR},
+        var3 = #{var3,jdbcType=VARCHAR},
+        var4 = #{var4,jdbcType=VARCHAR},
+        var5 = #{var5,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=INTEGER},
+        <if test="createTime != null">
+            create_time = #{createTime,jdbcType=INTEGER},
+        </if>
+       update_description = #{updateDescription,jdbcType=LONGVARCHAR},
+        <if test="setupScript != null">
+            setup_script = #{setupScript,jdbcType=LONGVARCHAR},
+        </if>
+        remark = #{remark,jdbcType=VARCHAR}
+        where  app_id = #{appId,jdbcType=INTEGER}
+        AND    version = #{version,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectVersionCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select COUNT(1)
+        from tl_app_version
+        WHERE app_id = #{appId}
+    </select>
+
+    <select id="selectVersion" resultMap="BaseResultMap">
+        select *
+        from tl_app_version
+        WHERE app_id = #{appId}
+        AND  version = #{version}
+    </select>
+
+    <!--查询app版本信息-->
+    <select id="selectById" parameterType="com.tt.javaserver.web.vo.AppVersion" resultMap="BaseResultMap">
+        select *
+        from tl_app_version
+        where id = #{id,jdbcType=INTEGER}
+    </select> <!--查询app版本信息-->
+    <select id="selectVersionByAppId" parameterType="com.tt.javaserver.web.vo.AppVersion" resultMap="BaseResultMap">
+        select *
+        from tl_app_version
+        where app_id = #{appId,jdbcType=INTEGER}
+        ORDER BY version ASC
+    </select>
+
+    <!--模糊查询对象-->
+    <select id="selectList" parameterType="com.tt.javaserver.web.vo.AppVersion" resultMap="BaseResultMap">
+        select *
+        from tl_app_version
+        <where>
+            <if test="appId != null">
+                <bind name="appId" value="'%' + appId + '%'"/>
+                and app_id like #{appId}
+            </if>
+            <if test="version != null">
+                <bind name="version" value="'%' + version + '%'"/>
+                and version like #{version}
+            </if>
+        </where>
+    </select>
+
+    <!--查询app版本个数-->
+    <select id="selectCount" parameterType="com.tt.javaserver.web.vo.AppVersion" resultType="java.lang.Integer">
+        select count(1)
+        from tl_app_version
+        <where>
+            <if test="appId != null">
+                <bind name="appId" value="'%' + appId + '%'"/>
+                and app_id like #{appId}
+            </if>
+            <if test="version != null">
+                <bind name="version" value="'%' + version + '%'"/>
+                and version like #{version}
+            </if>
+        </where>
+    </select>
+
+    <!--查询对象个数-->
+    <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.AppVersion" resultType="java.lang.Integer">
+        select count(1)
+        from tl_app_version
+        WHERE app_id = #{appId}
+        AND  version = #{version}
+    </select>
+
+    <!-- 通过多条件分页查询，返回数据集 -->
+    <select id="selectPageListUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultMap="BaseResultMap">
+        select * from tl_app_version
+         WHERE app_id = #{appId}
+        limit #{start},#{rows}
+    </select>
+
+    <!-- 通过多条件分页查询，返回总记录数 -->
+    <select id="selectPageCountUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultType="java.lang.Integer">
+        select count(1) from tl_app_version
+        WHERE app_id = #{appId}
+    </select>
+
+    <!--<insert id="insert1" parameterType="com.tt.javaserver.web.vo.AppVersion">-->
+    <!--insert into tl_app_version-->
+    <!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
+    <!--<if test="id != null">-->
+    <!--id,-->
+    <!--</if>-->
+    <!--<if test="appId != null">-->
+    <!--app_id,-->
+    <!--</if>-->
+    <!--<if test="version != null">-->
+    <!--version,-->
+    <!--</if>-->
+    <!--<if test="status != null">-->
+    <!--status,-->
+    <!--</if>-->
+    <!--<if test="var1 != null">-->
+    <!--var1,-->
+    <!--</if>-->
+    <!--<if test="var2 != null">-->
+    <!--var2,-->
+    <!--</if>-->
+    <!--<if test="var3 != null">-->
+    <!--var3,-->
+    <!--</if>-->
+    <!--<if test="var4 != null">-->
+    <!--var4,-->
+    <!--</if>-->
+    <!--<if test="var5 != null">-->
+    <!--var5,-->
+    <!--</if>-->
+    <!--<if test="updateTime != null">-->
+    <!--update_time,-->
+    <!--</if>-->
+    <!--<if test="createTime != null">-->
+    <!--create_time,-->
+    <!--</if>-->
+    <!--<if test="remark != null">-->
+    <!--remark,-->
+    <!--</if>-->
+    <!--<if test="updateDescription != null">-->
+    <!--update_description,-->
+    <!--</if>-->
+    <!--<if test="setupScript != null">-->
+    <!--setup_script,-->
+    <!--</if>-->
+    <!--</trim>-->
+    <!--<trim prefix="values (" suffix=")" suffixOverrides=",">-->
+    <!--<if test="id != null">-->
+    <!--#{id,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="appId != null">-->
+    <!--#{appId,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="version != null">-->
+    <!--#{version,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="status != null">-->
+    <!--#{status,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="var1 != null">-->
+    <!--#{var1,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var2 != null">-->
+    <!--#{var2,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var3 != null">-->
+    <!--#{var3,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var4 != null">-->
+    <!--#{var4,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var5 != null">-->
+    <!--#{var5,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="updateTime != null">-->
+    <!--#{updateTime,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="createTime != null">-->
+    <!--#{createTime,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="remark != null">-->
+    <!--#{remark,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="updateDescription != null">-->
+    <!--#{updateDescription,jdbcType=LONGVARCHAR},-->
+    <!--</if>-->
+    <!--<if test="setupScript != null">-->
+    <!--#{setupScript,jdbcType=LONGVARCHAR},-->
+    <!--</if>-->
+    <!--</trim>-->
+    <!--</insert>-->
+    <update id="update1111" parameterType="com.tt.javaserver.web.vo.AppVersion">
+    update tl_app_version
+    <set>
+    <if test="version != null">
+    version = #{version,jdbcType=VARCHAR},
+    </if>
+    <if test="status != null">
+    status = #{status,jdbcType=INTEGER},
+    </if>
+    <if test="var1 != null">
+    var1 = #{var1,jdbcType=VARCHAR},
+    </if>
+    <if test="var2 != null">
+    var2 = #{var2,jdbcType=VARCHAR},
+    </if>
+    <if test="var3 != null">
+    var3 = #{var3,jdbcType=VARCHAR},
+    </if>
+    <if test="var4 != null">
+    var4 = #{var4,jdbcType=VARCHAR},
+    </if>
+    <if test="var5 != null">
+    var5 = #{var5,jdbcType=VARCHAR},
+    </if>
+    <if test="updateTime != null">
+    update_time = #{updateTime,jdbcType=INTEGER},
+    </if>
+    <if test="createTime != null">
+    create_time = #{createTime,jdbcType=INTEGER},
+    </if>
+    <if test="remark != null">
+    remark = #{remark,jdbcType=VARCHAR},
+    </if>
+    <if test="updateDescription != null">
+    update_description = #{updateDescription,jdbcType=LONGVARCHAR},
+    </if>
+    <if test="setupScript != null">
+    setup_script = #{setupScript,jdbcType=LONGVARCHAR},
+    </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>

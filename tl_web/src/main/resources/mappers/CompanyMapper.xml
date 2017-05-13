@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tt.javaserver.web.dao.CompanyMapper">
+    <resultMap id="BaseResultMap" type="com.tt.javaserver.web.vo.Company">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="short_name" property="shortName" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="contact" property="contact" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="var1" property="var1" jdbcType="VARCHAR"/>
+        <result column="var2" property="var2" jdbcType="VARCHAR"/>
+        <result column="var3" property="var3" jdbcType="VARCHAR"/>
+        <result column="var4" property="var4" jdbcType="VARCHAR"/>
+        <result column="var5" property="var5" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <!--插入动作指令  -->
+    <insert id="insert" parameterType="com.tt.javaserver.web.vo.Company" keyProperty="id" useGeneratedKeys="true">
+        insert into tl_company_info (code, name,
+        short_name, mobile, contact,
+        url,
+         var1, var2, var3,
+        var4, var5, update_time,
+        create_time, remark, description
+        )
+        values ( #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+        #{shortName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR},
+        #{url,jdbcType=VARCHAR}, #{var1,jdbcType=VARCHAR}, #{var2,jdbcType=VARCHAR}, #{var3,jdbcType=VARCHAR},
+        #{var4,jdbcType=VARCHAR}, #{var5,jdbcType=VARCHAR}, #{updateTime,jdbcType=INTEGER},
+        #{createTime,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+
+    <!--删除动作指令-->
+    <delete id="deleteByInt" parameterType="java.lang.Integer">
+        delete from tl_company_info
+        where id= #{id}
+    </delete>
+
+    <!--修改动作指令-->
+    <update id="update" parameterType="com.tt.javaserver.web.vo.Company">
+        update tl_company_info
+        set
+        code = #{code},
+        name = #{name,jdbcType=VARCHAR},
+        short_name = #{shortName,jdbcType=VARCHAR},
+        mobile = #{mobile,jdbcType=VARCHAR},
+        contact = #{contact,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR},
+        var1 = #{var1,jdbcType=VARCHAR},
+        var2 = #{var2,jdbcType=VARCHAR},
+        var3 = #{var3,jdbcType=VARCHAR},
+        var4 = #{var4,jdbcType=VARCHAR},
+        var5 = #{var5,jdbcType=VARCHAR},
+        <if test="createTime != null">
+            create_time = #{createTime,jdbcType=INTEGER},
+        </if>
+        update_time = #{updateTime,jdbcType=INTEGER},
+        remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id}
+    </update>
+    <select id="select" resultMap="BaseResultMap">
+        select id,name,short_name
+        from tl_company_info
+    </select>
+
+    <!--模糊 查询对象-->
+    <select id="queryList" resultMap="BaseResultMap">
+        select id,name
+        from tl_company_info
+    </select>
+    <!--模糊 查询对象-->
+    <select id="selectList" parameterType="com.tt.javaserver.web.vo.Company" resultMap="BaseResultMap">
+        select *
+        from tl_company_info
+        <where>
+            <if test="code != null">
+                <bind name="code" value="'%' + code + '%'"/>
+                and code like #{code}
+            </if>
+            <if test="name != null">
+                <bind name="name" value="'%' + name + '%'"/>
+                and name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <!--查询对象个数-->
+    <select id="selectCount" parameterType="com.tt.javaserver.web.vo.Company" resultType="java.lang.Integer">
+        select count(1)
+        from tl_company_info
+        <where>
+            <if test="code != null">
+                <bind name="code" value="'%' + code + '%'"/>
+                and code like #{code}
+            </if>
+            <if test="name != null">
+                <bind name="name" value="'%' + name + '%'"/>
+                and name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <!--查询对象id-->
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select *
+        from tl_company_info
+        WHERE id = #{id};
+    </select>
+
+    <!--查询是否有对象-->
+    <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.Company" resultType="java.lang.Integer">
+        select count(1)
+        from tl_company_info
+        WHERE code = #{code};
+    </select>
+
+    <!-- 通过多条件分页查询，返回数据集 -->
+    <select id="selectPageListUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultMap="BaseResultMap">
+        select * from tl_company_info
+        <!--<where>-->
+        <!--<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>-->
+        <!--</where>-->
+        limit #{start},#{rows}
+    </select>
+
+    <!-- 通过多条件分页查询，返回总记录数 -->
+    <select id="selectPageCountUseDyc" parameterType="com.tt.javaserver.web.vo.Page" resultType="java.lang.Integer">
+        select count(1) from tl_company_info
+        <!--<where>-->
+        <!--<if test="paramEntity.name!=null">and name like #{paramEntity.name}</if>-->
+        <!--</where>-->
+    </select>
+
+
+</mapper>

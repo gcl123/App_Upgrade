@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tt.javaserver.web.dao.AppFilesMapper">
+    <resultMap id="BaseResultMap" type="com.tt.javaserver.web.vo.AppFiles">
+        <id column="app_version_id" jdbcType="INTEGER" property="appVersionId"/>
+        <id column="file_id" jdbcType="INTEGER" property="fileId"/>
+        <result column="var1" jdbcType="VARCHAR" property="var1"/>
+        <result column="var2" jdbcType="VARCHAR" property="var2"/>
+        <result column="var3" jdbcType="VARCHAR" property="var3"/>
+        <result column="var4" jdbcType="VARCHAR" property="var4"/>
+        <result column="var5" jdbcType="VARCHAR" property="var5"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+        <result column="create_time" jdbcType="INTEGER" property="createTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+
+    <!--插入动作指令  -->
+    <insert id="insert" parameterType="com.tt.javaserver.web.vo.AppFiles">
+        insert into tl_app_files (
+        app_version_id, file_id,
+        var1,var2, var3, var4, var5,
+        update_time, create_time, remark
+        )
+        values (#{appVersionId,jdbcType=INTEGER}, #{fileId,jdbcType=INTEGER}, #{var1,jdbcType=VARCHAR},
+        #{var2,jdbcType=VARCHAR}, #{var3,jdbcType=VARCHAR}, #{var4,jdbcType=VARCHAR}, #{var5,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--删除app文件对应-->
+    <delete id="deleteByInt" parameterType="java.lang.Integer">
+        delete from tl_app_files
+        where app_version_id = #{appVersionId,jdbcType=INTEGER}
+    </delete>
+
+    <!--更新软件文件表-->
+    <update id="update" parameterType="com.tt.javaserver.web.vo.AppFiles">
+        update tl_app_files
+        set
+        var1 = #{var1,jdbcType=VARCHAR},
+        var2 = #{var2,jdbcType=VARCHAR},
+        var3 = #{var3,jdbcType=VARCHAR},
+        var4 = #{var4,jdbcType=VARCHAR},
+        var5 = #{var5,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=INTEGER},
+        <if test="createTime != null">
+            create_time = #{createTime,jdbcType=INTEGER},
+        </if>
+        remark = #{remark,jdbcType=VARCHAR}
+        where app_version_id = #{appVersionId,jdbcType=INTEGER}
+        and file_id = #{fileId,jdbcType=INTEGER}
+    </update>
+
+    <!--根据版本查找文件信息-->
+    <select id="selectFiles" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select *
+        from tl_app_files
+        where app_version_id = #{appVersionId,jdbcType=INTEGER}
+    </select>
+    <!--根据文件查找对应软件版本-->
+    <select id="selectVersions" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select *
+        from tl_app_files
+        where file_id = #{fileId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据id 统计文件对应版本数量-->
+    <select id="selectCountVersions" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select COUNT(1)
+        from tl_app_files
+        where file_id = #{fileId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据id 统计软件版本对应文件数量数量-->
+    <select id="selectCountFiles" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select COUNT(1)
+        from tl_app_files
+        where app_version_id = #{appVersionId,jdbcType=INTEGER}
+    </select>
+
+    <!--查询记录-->
+    <select id="selectRecord" parameterType="com.tt.javaserver.web.vo.AppFiles" resultType="java.lang.Integer">
+        select COUNT(1)
+        from tl_app_files
+        where app_version_id = #{appVersionId,jdbcType=INTEGER}
+        AND file_id = #{fileId}
+    </select>
+
+    <!--&lt;!&ndash;<insert id="insertSelective" parameterType="com.tt.javaserver.web.vo.AppFiles">&ndash;&gt;-->
+    <!--&lt;!&ndash;insert into tl_app_files&ndash;&gt;-->
+    <!--&lt;!&ndash;<trim prefix="(" suffix=")" suffixOverrides=",">&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="appVersionId != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;app_version_id,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="fileId != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;file_id,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var1 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;var1,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var2 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;var2,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var3 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;var3,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var4 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;var4,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var5 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;var5,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="updateTime != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;update_time,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="createTime != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;create_time,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="remark != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;remark,&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;</trim>&ndash;&gt;-->
+    <!--&lt;!&ndash;<trim prefix="values (" suffix=")" suffixOverrides=",">&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="appVersionId != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{appVersionId,jdbcType=INTEGER},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="fileId != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{fileId,jdbcType=INTEGER},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var1 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{var1,jdbcType=VARCHAR},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var2 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{var2,jdbcType=VARCHAR},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var3 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{var3,jdbcType=VARCHAR},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var4 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{var4,jdbcType=VARCHAR},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="var5 != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{var5,jdbcType=VARCHAR},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="updateTime != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{updateTime,jdbcType=INTEGER},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="createTime != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{createTime,jdbcType=INTEGER},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;<if test="remark != null">&ndash;&gt;-->
+    <!--&lt;!&ndash;#{remark,jdbcType=VARCHAR},&ndash;&gt;-->
+    <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;</trim>&ndash;&gt;-->
+    <!--</insert>-->
+    <!--<update id="updateByPrimaryKeySelective" parameterType="com.tt.javaserver.web.vo.AppFiles">-->
+    <!--update tl_app_files-->
+    <!--<set>-->
+    <!--<if test="var1 != null">-->
+    <!--var1 = #{var1,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var2 != null">-->
+    <!--var2 = #{var2,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var3 != null">-->
+    <!--var3 = #{var3,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var4 != null">-->
+    <!--var4 = #{var4,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="var5 != null">-->
+    <!--var5 = #{var5,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--<if test="updateTime != null">-->
+    <!--update_time = #{updateTime,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="createTime != null">-->
+    <!--create_time = #{createTime,jdbcType=INTEGER},-->
+    <!--</if>-->
+    <!--<if test="remark != null">-->
+    <!--remark = #{remark,jdbcType=VARCHAR},-->
+    <!--</if>-->
+    <!--</set>-->
+    <!--where app_version_id = #{appVersionId,jdbcType=INTEGER}-->
+    <!--and file_id = #{fileId,jdbcType=INTEGER}-->
+    <!--</update>-->
+    <!--<update id="updateByPrimaryKey" parameterType="com.tt.javaserver.web.vo.AppFiles">-->
+    <!--update tl_app_files-->
+    <!--set var1 = #{var1,jdbcType=VARCHAR},-->
+    <!--var2 = #{var2,jdbcType=VARCHAR},-->
+    <!--var3 = #{var3,jdbcType=VARCHAR},-->
+    <!--var4 = #{var4,jdbcType=VARCHAR},-->
+    <!--var5 = #{var5,jdbcType=VARCHAR},-->
+    <!--update_time = #{updateTime,jdbcType=INTEGER},-->
+    <!--create_time = #{createTime,jdbcType=INTEGER},-->
+    <!--remark = #{remark,jdbcType=VARCHAR}-->
+    <!--where app_version_id = #{appVersionId,jdbcType=INTEGER}-->
+    <!--and file_id = #{fileId,jdbcType=INTEGER}-->
+    <!--</update>-->
+</mapper>

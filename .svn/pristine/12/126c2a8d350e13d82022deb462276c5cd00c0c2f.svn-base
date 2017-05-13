@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tt.javaserver.web.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.tt.javaserver.web.vo.User">
+        <id column="user_id" property="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <update id="add" parameterType="com.tt.javaserver.web.vo.User">
+        update students set name = #{userName}
+        where id = '1'
+    </update>
+</mapper>

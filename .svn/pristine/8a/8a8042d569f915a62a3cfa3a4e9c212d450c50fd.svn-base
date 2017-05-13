@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+
+    <group name="log config">
+        <property name="logginLevel" defaultValue="debug" description="日志文件级别">
+            <validator name="choice" choice="trace, debug, info, warn, error"/>
+        </property>
+        <property name="logginRoot" defaultValue="/disk3/logs/signup65"
+                  description="日志打印目录"/>
+        <property name="consoleLogginLevel" defaultValue="off"
+                  description="控制台日志打印级别"/>
+    </group>
+
+    <group name="spring config">
+        <property name="jdbc.properties.path"
+                  defaultValue="classpath*:jdbc.properties"
+                  description="jdbc.properties"/>
+        <property name="executor.corePoolSize" defaultValue="5"
+                  description="executor.corePoolSize"/>
+        <property name="executor.keepAliveSeconds" defaultValue="300"
+                  description="executor.keepAliveSeconds"/>
+        <property name="executor.maxPoolSize" defaultValue="50"
+                  description="executor.maxPoolSize"/>
+        <property name="executor.queueCapacity" defaultValue="25"
+                  description="executor.queueCapacity"/>
+    </group>
+
+    <script>
+        <generate template="WEB-INF/web.xml"/>
+        <generate template="config.properties.vm"
+                  destfile="WEB-INF/classes/confprop/config.properties"/>
+        <generate template="applicationContext.xml.vm"
+                  destfile="WEB-INF/classes/applicationContext.xml"/>
+    </script>
+</config>

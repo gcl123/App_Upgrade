@@ -1,0 +1,75 @@
+package com.tt.javaserver.web.controller;
+
+import java.io.*;
+/**
+ * Created by GCL on 17/5/3.
+ */
+public class testController {
+
+    /**
+     * 需求：
+     * 接收两个文件夹路径，把其中一个文件夹中(包含内容)
+     * 拷贝到另一个文件夹中
+     * @author Rocky
+     *
+     */
+        /**
+         * 分析：
+         * 1，在目标文件夹中创建原文件夹
+         * 2，获取文件夹中所有的文件或文件夹，存储在File数组中
+         * 3，遍历数组
+         * 4，如果是文件，就用IO流读写(只能读写文件，不能读写文件夹)
+         * 5，如果是文件夹，就递归调用
+         *
+         * @param args
+         * @throws IOException
+         */
+        public static void main(String[] args) throws IOException {
+//            File src = Test1.getDir();
+//            File dest = Test1.getDir();
+//            if(src.equals(dest)) {
+//                System.out.println("目标文件夹是原文件夹的子文件夹");
+//            } else {
+//                copy(src,dest);
+//            }
+        }
+
+        /**
+         * 把其中一个文件夹拷贝到另一个文件夹中
+         * 1，返回值类型是void
+         * 2，参数列表File src,File dest
+         * @param src
+         * @param dest
+         * @throws IOException
+         */
+        public static void copy(File src, File dest) throws IOException {
+            //1，在目标文件夹中创建原文件夹
+            File newDir = new File(dest,src.getName());
+            newDir.mkdir();
+            //2，获取文件夹中所有的文件或文件夹，存储在File数组中
+            File[] subFiles = src.listFiles();
+            //3，遍历数组
+            for (File subFile : subFiles) {
+                //4，如果是文件，就用IO流读写(只能读写文件，不能读写文件夹)
+                if(subFile.isFile()) {
+                    BufferedInputStream bis = new BufferedInputStream(
+                            new FileInputStream(subFile));
+                    BufferedOutputStream bos = new BufferedOutputStream(
+                            new FileOutputStream(new File(newDir,newDir.getName())));
+
+                    int index;
+                    while((index = bis.read()) != -1) {
+                        bos.write(index);
+                    }
+                    bis.close();
+                    bos.close();
+                    //5，如果是文件夹，就递归调用
+                } else {
+                    copy(subFile,newDir);
+                }
+            }
+
+
+        }
+
+}

@@ -1,0 +1,11 @@
+consoleLogginLevel  = on
+logginLevel  = info
+logginRoot   = /home/dev/zzweb/logs
+
+cfgPropertiesPath=/home/dev/zzweb/etc/config.properties
+jdbc.properties.path=classpath:jdbc.properties
+
+executor.corePoolSize=5
+executor.keepAliveSeconds=300
+executor.maxPoolSize=50
+executor.queueCapacity=25

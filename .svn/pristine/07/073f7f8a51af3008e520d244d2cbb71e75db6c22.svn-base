@@ -1,0 +1,127 @@
+package com.tt.javaserver.web.controller;
+
+import com.tt.javaserver.web.model.SimpleResult;
+import com.tt.javaserver.web.service.AppService;
+import com.tt.javaserver.web.vo.App;
+import com.tt.javaserver.web.vo.CurrentApp;
+import com.tt.javaserver.web.vo.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
+/**
+ * Created by GCL on 17/4/15.
+ */
+
+@Controller
+@RequestMapping("/app")
+public class AppController extends BaseController {
+    @Resource
+    private AppService appService;
+    @Resource
+    ServletContext application;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppController.class);
+
+    /**
+     * 添加app
+     *
+     * @param app
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public SimpleResult<Map> insert(App app) {
+        System.out.println("insert=============");
+        System.out.println(app);
+
+        return appService.insert(app);
+
+    }
+
+    /**
+     * 查询对象
+     *
+     * @param app
+     * @return
+     */
+    @RequestMapping("/query")
+    @ResponseBody
+    public SimpleResult<Map> query(App app) {
+
+        System.out.println("query=============");
+        System.out.println(app);
+        return appService.select(app);
+    }
+
+
+    /**
+     * 更新对象
+     *
+     * @param app
+     * @throws Exception
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public SimpleResult<Map> update(App app) {
+        System.out.println("update=============");
+        System.out.println(app.toString());
+        return appService.update(app);
+
+    }
+
+    /**
+     * 删除对象
+     *
+     * @param id
+     *
+     * @throws Exception
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public SimpleResult<Map> delete(int id) throws Exception {
+        System.out.println("delete=============");
+        System.out.println(id);
+        return appService.deleteByInt(id);
+    }
+
+    //通过关键字分页查询
+    @RequestMapping("/selectPageUseDyc")
+    @ResponseBody //如果返回json格式，需要这个注解，这里用来测试环境
+    public Object selectPageUseDyc(Page<App> page, HttpServletRequest request) {
+        System.out.println("page==========:" + page );
+
+        LOGGER.info("=====================logger");
+//        request.setAttribute("test","hello");
+//        session.setAttribute("test","eeee");
+        return appService.selectPageUseDyc(page,request);
+    }
+
+    /**
+     * 设为当前软件()
+     * @param id
+     * @param
+     * @return
+     */
+    @RequestMapping("/curApp")
+    @ResponseBody //如果返回json格式，需要这个注解，这里用来测试环境
+    public SimpleResult curApp(int id,HttpServletRequest request) {
+
+        System.out.println("curApp==========:" + id );
+        CurrentApp currentApp =  appService.selectCurApp(id);
+        request.getSession().setAttribute("curApp",currentApp);
+        if(currentApp != null){
+            return new SimpleResult(0,"设置为当前app成功");
+        }
+        return new SimpleResult(-1,"设置为当前app失败");
+    }
+
+}

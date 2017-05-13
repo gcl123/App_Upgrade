@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>my dir</title> 
+    <link rel="stylesheet" type="text/css" href="../../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+	
+	<script>
+	    var fso, curDrive;
+		var nodeId = 0;
+		var nodeCount = 0;
+		//alert("begin");
+		fso = new ActiveXObject("Scripting.FileSystemObject");
+		//alert("end");
+		var StrOut = new String();
+        var FileName = new String();
+        var Extention = new String();
+		var treeData = new String();
+		var strDoc = new String();
+		var nodePath = new String();
+
+		/*$('#tt').tree({
+			onClick: function(node){
+			alert(node.text);  // alert node text property when clicked
+			}
+		});*/
+        function band()
+		{
+		
+			treeData = "[\"id\":1,\"text\":\"My Documents\",\"children\":[{\"id\":11,\"text\":\"Photos\",\"children\":[{\"id\":111,	\"text\":\"Friend\"},"
+				+ "{\"id\":112,\"text\":\"Wife\"},{\"id\":113,\"text\":\"Company\"}]}]";
+
+			treeData = "[{\"id\": 1,\"text\": \"c:\",\"children\":[{\"id\":11,\"text\":\"Photos\"}]}]";
+
+			alert(treeData);
+
+			var myJson = eval('(' + treeData + ')');
+		
+			$('#tt2').tree({data: myJson});
+		 }
+
+
+        function initDirves()
+		{
+			var s, n, e, x;
+			curDrive = "C:\\";
+			e = new Enumerator(fso.Drives);
+			s = "";
+			for (; !e.atEnd(); e.moveNext())
+			{
+				x = e.item();
+				s = s + x.DriveLetter;
+				s += ":";
+				if (x.DriveType == 3)
+					n = x.ShareName;
+				else if (x.IsReady)
+					n = x.VolumeName;
+				else
+					n = "[unknow]";
+				s +=   n + ",";
+			}
+			var drives = s.split(",");    
+			var tableDrives = document.getElementById("drives");
+			for ( var i = 0; i < drives.length-1; i++ )
+			{
+				var option = document.createElement("option");
+				drives[i].split(":");
+				//option.value = "["+drives[i].split(":")[0]+":]"+drives[i].split(":")[1];
+				//option.text = "["+drives[i].split(":")[0]+":]"+drives[i].split(":")[1];
+				option.value = drives[i].split(":")[0]+":";
+				option.text = "["+drives[i].split(":")[0]+":]"+drives[i].split(":")[1];
+				tableDrives.add(option);
+			}
+		}
+ 
+        function getChecked(){
+			var nodes = $('#tt').tree('getChecked');
+			var s = '';
+			for(var i=0; i<nodes.length; i++){
+				if (s != '') s += ',';
+				s += nodes[i].text;
+			}
+			alert(s);
+		}
+
+		
+
+
+		function FindFolder(sDir)
+		{
+			var o = fso.GetFolder(sDir); 
+			var eFolder = new Enumerator(o.SubFolders); 
+
+
+			var curPath = o.path;
+			var subPath = "";
+
+	
+			// strDoc += "{\"id\":" + nodeId + ",\"text\":\"" + eFolder.item().name + "\"},"; 
+
+			//alert(curPath);
+
+            //"[{\"id\": 1,\"text\": \"My Documents\",\"children\":[{\"id\":11,\"text\":\"Photos\"}]}]";
+			//strDoc = ",\"children\":[";
+
+			StrOut = "";
+			//var strSubDoc = new String();
+			//var len = eFolder.length;
+			//alert(len);
+			//nodeCount = 0;
+			//for(i=0; !eFolder.atEnd(); eFolder.moveNext())
+			strDoc = "[";
+			
+			while(!eFolder.atEnd())
+			//for(i=0; i < 1; eFolder.moveNext())
+			{
+				
+				nodeId++;
+
+				subPath = eFolder.item().name;
+
+				/*if(subPath.charAt(0) == '$')
+				{
+					strSubDoc = "";
+				}
+				else
+				{
+					subPath = curPath + "\\" + subPath;
+					strSubDoc = FindFolder(subPath);
+
+				}*/
+			 
+ 				//if(strSubDoc == "")
+				  strDoc += "{\"id\":" + nodeId + ",\"text\":\"" + eFolder.item().name + "\",\"iconCls\":\"icon-doc\"},"; 
+				//else
+				//  strDoc += "{\"id\":" + nodeId + ",\"text\":\"" + eFolder.item().name + "\",\"children\":[{" + strSubDoc + "}]},"; 
+ 
+				eFolder.moveNext();
+
+				/*//alert(strDoc)
+				if (nodeId > 10)
+				{
+					break;
+				}*/
+				
+			}
+			//alert(StrOut);
+			 
+			//document.getElementById('fileList').innerHTML = strDoc;
+			//document.all.fileList.innerHtml=StrOut;
+			return strDoc.substr(0, strDoc.length-1) + "]"; 
+		}
+
+		function FindFile(FOo)
+		{
+			//var FSo = new Enumerator(FOo.Files);
+			var eFolder = new Enumerator(FOo.SubFolders);
+			var eFile = new Enumerator(FOo.Files);
+			//var FSo = new Enumerator(FOo.Drives);
+			
+			//var FileName, Extention, StrOut;
+			StrOut = "";
+			for(i=0; !eFolder.atEnd(); eFolder.moveNext())
+			{
+				/*if(FileName == "*" ||  FSo.item().name.slice(0,FSo.item().name.lastIndexOf(".")).toLowerCase().indexOf(FileName)>-1)
+				//if(Extention == "*" || FSo.item().name.slice(FSo.item().name.lastIndexOf(".")+1).toLowerCase().indexOf(Extention)>-1)
+				{
+					StrOut += "<li>" + FSo.item().name  + "  "+ String(FSo.item().size).slice(0,3) +"byte <//li>";
+					//+ "." + FSo.item().type
+				}
+				else*/
+				{
+				  StrOut += "<li>" + eFolder.item().name + "<//li>";
+				  //FindFile(fso.GetFolder(eFolder.item().name));
+				}
+
+				i++;
+			}
+			//alert(StrOut);
+			//
+			for(i=0; !eFile.atEnd(); eFile.moveNext())
+			{
+				StrOut += "<li>" + eFile.item().name  + "  "+ String(eFile.item().size).slice(0,3) + "byte<//li>";
+			}
+			document.getElementById('fileList').innerHTML = StrOut;
+			//document.all.fileList.innerHtml=StrOut;
+		}
+
+        function removeTreeNode(tree, node)
+		{
+			if(node)
+			{
+				//node.iconCls = "";
+				//alert(node.target.innerHTML);
+				//$('#tt').tree('remove', {parent:node.target});
+				var childrenNodes = tree.tree('getChildren', node.target);
+				var childrenNode;
+				//alert(childrenNodes.length);
+				for (i=0; i < childrenNodes.length; i++)
+				{
+					//$('#tt').tree('remove', childrenNodes[0].target);
+					childrenNode = childrenNodes[i];
+					//alert(childrenNode.text);
+					tree.tree('remove', childrenNode.target);
+					//removeTreeNode(childrenNodes[0]);
+					//$('#tt').tree('remove', {parent:node.target});
+				}
+			//var childrenNodes = $('#tt').tree('getChildren',node.target);
+			}
+		}
+		function appendTreeNode(tree, node)
+		{
+			//var node = $('#tt').tree('getSelected');
+			var parentNode;
+			if (node)
+			{
+				nodePath = node.text;
+				parentNode = tree.tree('getParent', node.target);
+				
+				//alert(parentNode.text);
+				while (parentNode)
+				{
+					nodePath = parentNode.text + "\\" + nodePath;
+					//parentNode = parentNode.parent;
+					parentNode = tree.tree('getParent', parentNode.target);
+				}
+				
+				//alert(nodePath);
+
+				$('#nodePath').panel({title:nodePath});
+
+				//show dir 
+				//alert(node.text);
+				removeTreeNode(tree, node);
+				//$('#tt').tree('remove', node.target);
+				//var nodes = [{"id":13,"text":"Raspberry"}, {"id":14,"text":"Cantaloupe"}];
+
+				treeData = FindFolder(nodePath);//"[{\"id\":13,\"text\":\"Raspberry\"}, {\"id\":14,\"text\":\"Cantaloupe\"}]";
+				//alert(treeData);
+				if(treeData.length  > 3)
+                {
+					myJson = eval("(" + treeData + ")");
+					addNodes(tree, node, myJson);
+				}
+		
+				//tree.tree('append', {parent:node.target, data:nodes});
+				showFiles(nodePath);
+			}
+		}
+
+        function addNodes(tree, node, nodes)
+		{
+			//var node = $('#tt').tree('getSelected');
+			if (node)
+			{
+				removeTreeNode(tree, node);
+				tree.tree('append', {parent:node.target, data:nodes});
+			}
+		}
+
+		function driveChange()
+		{
+
+            var index = document.all.drives.options.selectedIndex;
+			if (index>=0)
+			{
+				curDrive = document.all.drives.options[index].value;
+			    //alert(curDrive);
+				//curDrive = curDrive + "Firefox\\";
+				//FindFile(fso.GetFolder(curDrive));
+
+				//treeData = "[{\"id\":0,\"text\":\"" + curDrive + "\"" + FindFolder(curDrive) + "}]";
+				
+				var tree = $('#tt2');
+				treeData = "[{\"id\": 1,\"text\":\"" + curDrive + "\"}]";
+				//alert(treeData);
+				var myJson = eval("(" + treeData + ")");
+
+				tree.tree({data: myJson});
+
+                var childrenNodes = tree.tree('getChildren', null);
+
+				if (childrenNodes.length > 0)
+				{
+					var childrenNode = childrenNodes[0];
+					treeData = FindFolder(curDrive);//"[{\"id\":13,\"text\":\"Raspberry\"}, {\"id\":14,\"text\":\"Cantaloupe\"}]";
+					//alert(treeData);
+					myJson = eval("(" + treeData + ")");
+					addNodes(tree, childrenNode, myJson);
+				}
+
+			}
+			
+		}
+
+		function showFiles(sDir)
+		{
+			/*var tree = $('#ttFiles');
+
+		  	treeData = FindFolder(sDir);//"[{\"id\":13,\"text\":\"Raspberry\"}, {\"id\":14,\"text\":\"Cantaloupe\"}]";
+		    alert(treeData);		 
+			var myJson = eval("(" + treeData + ")");
+			addNodes(tree, null, myJson);*/
+				 
+		}
+
+
+
+	</script>
+</head>
+<body onload="initDirves()">
+	<h2>dir</h2> 
+
+	<div style="margin:20px 0;">
+	    <!--a href="#" onclick="initDirves()">init drives</a-->  
+		<a href="#" class="easyui-linkbutton" onclick="getChecked()">Message Checked</a>
+		<a href="#" class="easyui-linkbutton" onclick="band()">upload</a>
+	</div>
+
+	 
+ 
+
+<div style="width:1000px;float:left">
+
+  <div style="width:308px;float:left">
+    <!--dir list-->
+    <div class="easyui-panel" title="Select App directory please" style="width:300px;height:600px;padding:2px">
+	   
+	    <select id="drives" name="drives" style="width:300px" onchange="driveChange()"></select>	
+	    <!--/div>
+	   <div class="easyui-panel" style="width:400px;padding:0px"-->
+		<ul id="tt2" class="easyui-tree" data-options="" onDblClick="appendTreeNode($('#tt2'), $('#tt2').tree('getSelected'))"></ul>
+	   
+    </div> 
+  </div>
+
+  <div style="width:500px;float:left">
+    <!--file list-->
+    <div id="nodePath" class="easyui-panel" title=" " style="width:800;height:600px;padding:2px">
+	<!--div>
+	  <ul id="ttFiles" class="easyui-tree" data-options="checkbox:true"</ul>
+    </div-->
+ 
+	<table class="easyui-datagrid" title="DataGrid Complex Toolbar" style="width:700px;height:250px"
+			data-options="rownumbers:true,singleSelect:true,url:'datagrid_data1.json',method:'get',toolbar:'#tb',footer:'#ft'">
+		<thead>
+			<tr>
+				<th data-options="field:'itemid',width:80">Item ID</th>
+				<th data-options="field:'productid',width:100">Product</th>
+				<th data-options="field:'listprice',width:80,align:'right'">List Price</th>
+				<th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+				<th data-options="field:'attr1',width:240">Attribute</th>
+				<th data-options="field:'status',width:60,align:'center'">Status</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 5px;">
+		Date From: <input class="easyui-datebox" style="width:110px">
+		To: <input class="easyui-datebox" style="width:110px">
+		Language: 
+		<select class="easyui-combobox" panelHeight="auto" style="width:100px">
+			<option value="java">Java</option>
+			<option value="c">C</option>
+			<option value="basic">Basic</option>
+			<option value="perl">Perl</option>
+			<option value="python">Python</option>
+		</select>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+	</div>
+	<div id="ft" style="padding:2px 5px;">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"></a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
+	</div>
+
+
+	</div>
+  </div>
+ 
+</div>
+	
+	<div style="margin:10px 0;width:200px">
+		<input type="checkbox" checked onchange="$('#tt').tree({cascadeCheck:$(this).is(':checked')})">CascadeCheck 
+		<input type="checkbox" onchange="$('#tt').tree({onlyLeafCheck:$(this).is(':checked')})">OnlyLeafCheck
+	</div>
+
+	<div class="easyui-panel" style="width:200px;padding:5px">
+		<ul id="tt" class="easyui-tree" data-options="url:'tree_data2.json',method:'get',animate:true,checkbox:true" onDblClick="appendTreeNode($('#tt'), $('#tt').tree('getSelected'))"></ul>
+	</div>
+
+	<div>
+	<ol id="fileList" name="fileList">
+	</ol>
+    </div>
+
+	<div style="width:1000px;float:left">
+    <div style="width:300px;float:left"><div class="easyui-panel" style="width:200px;padding:5px">
+		<ul id="tt" class="easyui-tree" data-options="url:'tree_data2.json',method:'get',animate:true,checkbox:true" onDblClick="appendTreeNode($('#tt'), $('#tt').tree('getSelected'))"></ul>
+	</div></div>
+	<div style="width:300px;float:left"><div class="easyui-panel" style="width:200px;padding:5px">
+		<ul id="tt" class="easyui-tree" data-options="url:'tree_data2.json',method:'get',animate:true,checkbox:true" onDblClick="appendTreeNode($('#tt'), $('#tt').tree('getSelected'))"></ul>
+	</div></div>
+	</div>
+ 
+	 
+</body>
+
+</html>
+
+
+	

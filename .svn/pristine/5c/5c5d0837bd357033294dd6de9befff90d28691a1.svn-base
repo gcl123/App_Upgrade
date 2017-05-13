@@ -1,0 +1,100 @@
+package com.tt.javaserver.web.controller;
+
+import com.tt.javaserver.web.model.SimpleResult;
+import com.tt.javaserver.web.service.AppVersionService;
+import com.tt.javaserver.web.vo.AppVersion;
+import com.tt.javaserver.web.vo.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+/**
+ * Created by GCL on 17/4/20.
+ */
+@Controller
+@RequestMapping("/version")
+public class AppVersionController extends BaseController {
+
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppVersionController.class);
+
+
+
+    @Resource
+    private AppVersionService appVersionService;
+
+    /**
+     * 新增操作指令
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public SimpleResult<Map> insert(AppVersion appVersion) {
+        System.out.println("====add====");
+        System.out.println(appVersion.toString());
+
+        return appVersionService.insert(appVersion);
+    }
+
+
+    /**
+     * 查询对象
+     *
+     * @param appVersion
+     * @return
+     */
+    @RequestMapping("/query")
+    @ResponseBody
+    public SimpleResult<Map> query(AppVersion appVersion) {
+        System.out.println("=============");
+        System.out.println(appVersion.toString());
+
+        return appVersionService.select(appVersion);
+    }
+
+
+    /**
+     * 更新appVersion指令
+     *
+     * @param appVersion
+     * @return
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public SimpleResult<Map> update(AppVersion appVersion) {
+        System.out.println("=============");
+        System.out.println(appVersion.toString());
+
+        return appVersionService.update(appVersion);
+    }
+
+    /**
+     * 删除
+     *
+     * @param
+     * @throws Exception
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public SimpleResult<Map> delete(int  id) {
+        System.out.println("delete============");
+        System.out.println(id);
+
+        return appVersionService.deleteByInt(id);
+    }
+
+    //通过关键字分页查询
+    @RequestMapping("/selectPageUseDyc")
+    @ResponseBody //如果返回json格式，需要这个注解，这里用来测试环境
+    public Object selectPageUseDyc(Page<AppVersion> page) {
+
+        LOGGER.debug("test log4j============================");
+        System.out.println("page==========:" + page );
+        return appVersionService.selectPageUseDyc(page);
+    }
+
+}

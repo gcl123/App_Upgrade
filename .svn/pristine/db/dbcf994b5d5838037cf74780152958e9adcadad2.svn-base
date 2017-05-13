@@ -1,0 +1,16 @@
+package com.tt.javaserver.web.service;
+
+import com.tt.javaserver.web.vo.App;
+import com.tt.javaserver.web.vo.Page;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
+/**
+ * Created by GCL on 17/4/15.
+ */
+@Service
+public interface AppService extends BaseService<App> {
+     Map selectPageUseDyc(Page<App> page, HttpServletRequest request);
+}

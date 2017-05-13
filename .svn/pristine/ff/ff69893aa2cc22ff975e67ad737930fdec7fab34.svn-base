@@ -1,0 +1,48 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Administrator
+  Date: 2017-04-20
+  Time: 10:00
+  To change this template use File | Settings | File Templates.
+--%>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <%
+        String path = request.getContextPath();
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+        //String absPath = application.getRealPath(request.getRequestURI());
+    %>
+    <base href="<%=basePath%>"/>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>easyui/themes/icon.css"/>
+    <!--link rel="stylesheet" type="text/css" href="easyui/demo/demo.css"/-->
+    <script type="text/javascript" src="<%=basePath%>js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>js/JQuery-formui.js"></script>
+    <script type="text/javascript" src="<%=basePath%>js/common.js"></script>
+    
+</head>
+<body style="background:url('<%=basePath%>css/images/FooterBG.jpg') no-repeat right bottom;">
+<div style=" margin:20px; text-align:center; font-size:28px;">文件上传</div>
+<!--%=PublicinformationUtil.GetProperties("sysname")%-->
+<div id="pnlAppInfo" class="easyui-panel" style="width:1100px;height:54px;padding:4px;"
+     data-options="title:'App信息'">
+    <b>AppCode：Updater;&nbsp;&nbsp;&nbsp;&nbsp;
+        App名称：App下载器&nbsp;&nbsp;&nbsp;&nbsp;
+        所属公司：浙江通览科技有限公司&nbsp;&nbsp;&nbsp;&nbsp;
+        最新版本：1.0.0.1</b>
+</div>
+
+<div id="container_id">
+
+<ul>
+    <li><a href="tonlan://upload?type=1&appInfo='123456789'">一键上传</a></li>
+    <li><a href="tonlan://upload?type=2&appInfo='123456789'">选择上传</a></li>
+</ul>
+</div>
+
+</body>
+</html>

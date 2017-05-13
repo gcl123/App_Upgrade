@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!--控制台-->
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %-60c - %m%n"/>
+        </layout>
+        <!--设置级别-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax" value="INFO"/>
+            <param name="LevelMin" value="DEBUG"/>
+        </filter>
+    </appender>
+
+
+    <!--每天产生一个日志文件文件-->
+    <appender name="PROJECT" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${LOG_DIR}/app_upgrade.log"/>
+        <param name="Append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %-60c - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax" value="ERROR"/>
+            <param name="LevelMin" value="DEBUG"/>
+        </filter>
+    </appender>
+
+    <appender name="PROJECT_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="2048"/>
+        <appender-ref ref="PROJECT"/>
+    </appender>
+
+    <!--文件大小到达指定尺寸的时候产生新的文件-->
+    <!--记录请求操作-->
+    <appender name="REQUEST"
+              class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="File" value="${LOG_DIR}/app_upgrade_request.log"/>
+        <param name="Append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="fileNamePattern"
+                   value="${LOG_DIR}/app_upgrade_request.%d.log"/>
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %-60c - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="REQUEST_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="2048"/>
+        <appender-ref ref="REQUEST"/>
+    </appender>
+
+
+    <appender name="CONTROLLER" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="File" value="${LOG_DIR}/app_upgrade_controller.log"/>
+        <param name="Append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="fileNamePattern"
+                   value="${LOG_DIR}/app_upgrade_controller.%d.log"/>
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %-60c - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="CONTROLLER_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="2048"/>
+        <appender-ref ref="CONTROLLER"/>
+    </appender>
+
+    <appender name="SERVICE" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="File" value="${LOG_DIR}/app_upgrade_biz.log"/>
+        <param name="Append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="fileNamePattern"
+                   value="${LOG_DIR}/app_upgrade_biz.%d.log"/>
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %-60c - %m%n"/>
+        </layout>
+
+    </appender>
+
+    <appender name="SERVICE_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="2048"/>
+        <appender-ref ref="SERVICE"/>
+    </appender>
+
+    <appender name="AUTHENTICATE" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="File" value="${LOG_DIR}/authentication.log"/>
+        <param name="Append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="fileNamePattern"
+                   value="${LOG_DIR}/authentication.%d.log"/>
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %-60c - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="AUTHENTICATE_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="2048"/>
+        <appender-ref ref="SERVICE"/>
+    </appender>
+
+    <appender name="APACHE" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="File" value="${LOG_DIR}/app_upgrade_apache.log"/>
+        <param name="Append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="fileNamePattern"
+                   value="${LOG_DIR}/app_upgrade_apache.%d.log"/>
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %-60c - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="APACHE_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="2048"/>
+        <appender-ref ref="APACHE"/>
+    </appender>
+
+    <appender name="TRACKING" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="File" value="${LOG_DIR}/app_upgrade_tracking.log"/>
+        <param name="Append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="fileNamePattern"
+                   value="${LOG_DIR}/app_upgrade_tracking.%d.log"/>
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %-60c - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="TRACKING_ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="2048"/>
+        <appender-ref ref="TRACKING"/>
+    </appender>
+
+    <logger name="com.zz.javaserver.web.controller" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="CONTROLLER_ASYNC"/>
+    </logger>
+
+    <logger name="com.zz.javaserver.web.interceptor.CryptInterceptor" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="AUTHENTICATE_ASYNC"/>
+    </logger>
+
+    <logger name="com.zz.javaserver.web.service" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="SERVICE_ASYNC"/>
+    </logger>
+
+    <logger name="org.apache" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="APACHE_ASYNC"/>
+    </logger>
+    <logger name="org.springframework" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="tracking" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="TRACKING_ASYNC"/>
+    </logger>
+    <logger name="request" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="REQUEST_ASYNC"/>
+    </logger>
+
+    <!--<root>-->
+        <!--<level value="DEBUG"/>-->
+        <!--<appender-ref ref="PROJECT_ASYNC"/>-->
+    <!--</root> -->
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</log4j:configuration>
