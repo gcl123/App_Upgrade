@@ -9,6 +9,7 @@ mvn clean install -Dmaven.test.skip=true
 cd $WORKING_DIR/zz-common
 mvn clean install -Dmaven.test.skip=true
 
+#hello
 # sync static file to cdn
 rm -rf $WORKING_DIR/qiniu/data*
 cp -rf $WORKING_DIR/zz-mobile-h5/src/main/webapp/static $WORKING_DIR/qiniu/data/
